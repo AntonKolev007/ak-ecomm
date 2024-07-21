@@ -34,18 +34,11 @@ public class AuthController {
 
     private JwtUtils jwtUtils;
     private AuthenticationManager authenticationManager;
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder encoder;
+    UserRepository userRepository;
+    RoleRepository roleRepository;
+    PasswordEncoder encoder;
 
-    public AuthController() {
-    }
-
-    public AuthController(JwtUtils jwtUtils,
-                          AuthenticationManager authenticationManager,
-                          UserRepository userRepository,
-                          RoleRepository roleRepository,
-                          PasswordEncoder encoder) {
+    public AuthController(JwtUtils jwtUtils, AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
@@ -76,7 +69,8 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        UserInfoResponse response = new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), roles, jwtToken);
+        UserInfoResponse response = new UserInfoResponse(userDetails.getId(),
+                userDetails.getUsername(), roles, jwtToken);
 
         return ResponseEntity.ok(response);
     }
