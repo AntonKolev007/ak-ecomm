@@ -6,12 +6,15 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 @Entity
+@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long productId;
     @NotBlank
     @Size(min = 3, message = "Product name must contain at least 3 characters!")
+    @Column(name = "product_name")
     private String productName;
     private String image;
     @NotBlank
@@ -24,11 +27,16 @@ public class Product {
     @Positive
     private double discount;
     @Positive
+    @Column(name = "special_price")
     private double specialPrice;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User user;
 
     public Product() {
     }
@@ -41,7 +49,8 @@ public class Product {
                    double price,
                    double discount,
                    double specialPrice,
-                   Category category) {
+                   Category category,
+                   User user) {
         this.productId = productId;
         this.productName = productName;
         this.image = image;
@@ -51,6 +60,7 @@ public class Product {
         this.discount = discount;
         this.specialPrice = specialPrice;
         this.category = category;
+        this.user = user;
     }
 
     public Long getProductId() {
@@ -123,5 +133,29 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", image='" + image + '\'' +
+                ", description='" + description + '\'' +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", discount=" + discount +
+                ", specialPrice=" + specialPrice +
+                ", category=" + category +
+                ", user=" + user +
+                '}';
     }
 }

@@ -129,6 +129,9 @@ public class ProductServiceImpl implements ProductService {
         List<ProductRequestDTO> productRequestDTOS = products.stream()
                 .map(prod -> modelMapper.map(prod, ProductRequestDTO.class))
                 .toList();
+        if (products.isEmpty()) {
+            throw new APIException("No product with keyword: " + keyWord);
+        }
         return getProductResponseDTO(productsByKeyWord, productRequestDTOS);
     }
 
