@@ -20,7 +20,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private long userID;
+    private long userId;
     @NotBlank
     @Size(min = 2, max = 20)
     @Column(name = "user_name")
@@ -65,7 +65,7 @@ public class User {
                 String password,
                 Set<Role> roles,
                 Set<Product> products) {
-        this.userID = userID;
+        this.userId = userID;
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -73,12 +73,12 @@ public class User {
         this.products = products;
     }
 
-    public long getUserID() {
-        return userID;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUserID(long userID) {
-        this.userID = userID;
+    public void setUserId(long userID) {
+        this.userId = userID;
     }
 
     public String getUserName() {
@@ -132,7 +132,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userID=" + userID +
+                "userID=" + userId +
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
