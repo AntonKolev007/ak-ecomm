@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "products")
 public class Product {
@@ -38,6 +41,9 @@ public class Product {
     @JoinColumn(name = "seller_id")
     private User user;
 
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private List<CartItem> products = new ArrayList<>();
+
     public Product() {
     }
 
@@ -50,7 +56,8 @@ public class Product {
                    double discount,
                    double specialPrice,
                    Category category,
-                   User user) {
+                   User user,
+                   List<CartItem> products) {
         this.productId = productId;
         this.productName = productName;
         this.image = image;
@@ -61,6 +68,7 @@ public class Product {
         this.specialPrice = specialPrice;
         this.category = category;
         this.user = user;
+        this.products=products;
     }
 
     public Long getProductId() {
@@ -141,6 +149,14 @@ public class Product {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<CartItem> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<CartItem> products) {
+        this.products = products;
     }
 
     @Override

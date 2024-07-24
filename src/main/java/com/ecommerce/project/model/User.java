@@ -50,6 +50,9 @@ public class User {
     inverseJoinColumns = @JoinColumn(name = "address_id"))
     private List<Address> addresses = new ArrayList<>();
 
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST,CascadeType.MERGE}, orphanRemoval = true)
+    private Cart cart;
+
     public User(String userName, String email, String password) {
         this.userName = userName;
         this.email = email;
@@ -64,13 +67,14 @@ public class User {
                 String email,
                 String password,
                 Set<Role> roles,
-                Set<Product> products) {
+                Set<Product> products, Cart cart) {
         this.userId = userID;
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.roles = roles;
         this.products = products;
+        this.cart = cart;
     }
 
     public long getUserId() {
@@ -127,6 +131,14 @@ public class User {
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     @Override
