@@ -34,23 +34,37 @@ public class Address {
     @Size(min = 6, message = "Postal code must be at least 6 characters!")
     private String zipCode;
 
-    @ManyToMany(mappedBy = "addresses")
-    private List<User> users;
+    @ManyToOne
+    @JoinColumn(name = "user_d")
+    private User user;
 
-    public Address(String street, String buildingName, String city, String state, String country, String zipCode, List<User> users) {
+    public Address(String street,
+                   String buildingName,
+                   String city,
+                   String state,
+                   String country,
+                   String zipCode,
+                   User user) {
         this.street = street;
         this.buildingName = buildingName;
         this.city = city;
         this.state = state;
         this.country = country;
         this.zipCode = zipCode;
-        this.users = users;
+        this.user = user;
     }
 
     public Address() {
     }
 
-    public Address(Long addressId, String street, String buildingName, String city, String state, String country, String zipCode, List<User> users) {
+    public Address(Long addressId,
+                   String street,
+                   String buildingName,
+                   String city,
+                   String state,
+                   String country,
+                   String zipCode,
+                   User user) {
         this.addressId = addressId;
         this.street = street;
         this.buildingName = buildingName;
@@ -58,7 +72,7 @@ public class Address {
         this.state = state;
         this.country = country;
         this.zipCode = zipCode;
-        this.users = users;
+        this.user = user;
     }
 
     public Long getAddressId() {
@@ -117,12 +131,12 @@ public class Address {
         this.zipCode = zipCode;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -135,6 +149,7 @@ public class Address {
                 ", state='" + state + '\'' +
                 ", country='" + country + '\'' +
                 ", zipCode='" + zipCode + '\'' +
+                ", user='" + user + '\'' +
                 '}';
     }
 }
