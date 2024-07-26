@@ -1,14 +1,12 @@
 package com.ecommerce.project.payload;
 
-import com.ecommerce.project.model.Product;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartRequestDTO {
+public class CartRequestDTO implements Serializable {
     private Long cartId;
-    private Double totalPrice=0.0;
-
+    private Double totalPrice = 0.0;
     private List<ProductRequestDTO> products = new ArrayList<>();
 
     public CartRequestDTO() {

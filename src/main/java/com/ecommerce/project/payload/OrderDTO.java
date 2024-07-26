@@ -1,10 +1,12 @@
 package com.ecommerce.project.payload;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 
-public class OrderDTO {
+public class OrderDTO implements Serializable {
     private Long orderId;
     private String email;
     private List<OrderItemDTO> orderItems;
@@ -96,5 +98,18 @@ public class OrderDTO {
 
     public void setAddressId(Long addressId) {
         this.addressId = addressId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderDTO orderDTO = (OrderDTO) o;
+        return Objects.equals(orderId, orderDTO.orderId) && Objects.equals(email, orderDTO.email) && Objects.equals(orderItems, orderDTO.orderItems) && Objects.equals(orderDate, orderDTO.orderDate) && Objects.equals(payment, orderDTO.payment) && Objects.equals(totalAmount, orderDTO.totalAmount) && Objects.equals(orderStatus, orderDTO.orderStatus) && Objects.equals(addressId, orderDTO.addressId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId, email, orderItems, orderDate, payment, totalAmount, orderStatus, addressId);
     }
 }

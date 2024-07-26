@@ -1,6 +1,9 @@
 package com.ecommerce.project.payload;
 
-public class ProductRequestDTO {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class ProductRequestDTO implements Serializable {
     private Long productId;
     private String productName;
     private String image;
@@ -94,4 +97,24 @@ public class ProductRequestDTO {
     public void setSpecialPrice(double specialPrice) {
         this.specialPrice = specialPrice;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductRequestDTO that = (ProductRequestDTO) o;
+        return Double.compare(that.price, price) == 0 &&
+                Double.compare(that.discount, discount) == 0 &&
+                Double.compare(that.specialPrice, specialPrice) == 0 &&
+                Objects.equals(productId, that.productId) &&
+                Objects.equals(productName, that.productName) &&
+                Objects.equals(image, that.image) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(quantity, that.quantity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, productName, image, description, quantity, price, discount, specialPrice);
+    }
+
 }

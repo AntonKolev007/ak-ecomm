@@ -119,4 +119,16 @@ public class Payment {
     public void setPgName(String pgName) {
         this.pgName = pgName;
     }
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "paymentId=" + paymentId +
+                ", paymentMethod='" + paymentMethod + '\'' +
+                ", pgPaymentId='" + pgPaymentId + '\'' +
+                ", pgStatus='" + pgStatus + '\'' +
+                ", pgResponseMessage='" + pgResponseMessage + '\'' +
+                ", pgName='" + pgName + '\'' +
+                '}';
+    }
 }

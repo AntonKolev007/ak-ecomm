@@ -1,5 +1,7 @@
 package com.ecommerce.project.exceptions;
 
+import java.util.Objects;
+
 public class ResourceNotFoundException extends RuntimeException {
     String resourceName;
     String field;
@@ -23,4 +25,16 @@ public class ResourceNotFoundException extends RuntimeException {
         this.fieldId = fieldId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResourceNotFoundException that = (ResourceNotFoundException) o;
+        return Objects.equals(resourceName, that.resourceName) && Objects.equals(field, that.field) && Objects.equals(fieldName, that.fieldName) && Objects.equals(fieldId, that.fieldId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(resourceName, field, fieldName, fieldId);
+    }
 }

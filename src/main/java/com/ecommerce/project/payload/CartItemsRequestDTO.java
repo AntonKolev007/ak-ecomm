@@ -1,6 +1,8 @@
 package com.ecommerce.project.payload;
 
-public class CartItemsRequestDTO {
+import java.io.Serializable;
+
+public class CartItemsRequestDTO implements Serializable {
     private Long cartItemId;
     private CartRequestDTO cart;
     private ProductRequestDTO product;

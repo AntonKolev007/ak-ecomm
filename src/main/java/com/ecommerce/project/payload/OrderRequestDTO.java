@@ -1,6 +1,8 @@
 package com.ecommerce.project.payload;
 
-public class OrderRequestDTO {
+import java.io.Serializable;
+
+public class OrderRequestDTO implements Serializable {
     private Long addressId;
     private String paymentMethod;
     private String pgName;

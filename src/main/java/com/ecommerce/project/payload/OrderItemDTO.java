@@ -1,7 +1,10 @@
 package com.ecommerce.project.payload;
 
 
-public class OrderItemDTO {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class OrderItemDTO implements Serializable {
     private Long orderItemId;
     private ProductRequestDTO product;
     private Integer quantity;
@@ -61,5 +64,18 @@ public class OrderItemDTO {
 
     public void setOrderedProductPrice(double orderedProductPrice) {
         this.orderedProductPrice = orderedProductPrice;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItemDTO that = (OrderItemDTO) o;
+        return Double.compare(discount, that.discount) == 0 && Double.compare(orderedProductPrice, that.orderedProductPrice) == 0 && Objects.equals(orderItemId, that.orderItemId) && Objects.equals(product, that.product) && Objects.equals(quantity, that.quantity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderItemId, product, quantity, discount, orderedProductPrice);
     }
 }

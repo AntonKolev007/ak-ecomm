@@ -1,6 +1,9 @@
 package com.ecommerce.project.payload;
 
-public class PaymentDTO {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class PaymentDTO implements Serializable {
     private Long paymentId;
     private String paymentMethod;
     private String pgPaymentId;
@@ -71,5 +74,18 @@ public class PaymentDTO {
 
     public void setPgName(String pgName) {
         this.pgName = pgName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PaymentDTO that = (PaymentDTO) o;
+        return Objects.equals(paymentId, that.paymentId) && Objects.equals(paymentMethod, that.paymentMethod) && Objects.equals(pgPaymentId, that.pgPaymentId) && Objects.equals(pgStatus, that.pgStatus) && Objects.equals(pgResponseMessage, that.pgResponseMessage) && Objects.equals(pgName, that.pgName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(paymentId, paymentMethod, pgPaymentId, pgStatus, pgResponseMessage, pgName);
     }
 }

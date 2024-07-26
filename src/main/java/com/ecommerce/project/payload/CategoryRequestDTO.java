@@ -1,6 +1,8 @@
 package com.ecommerce.project.payload;
 
-public class CategoryRequestDTO {
+import java.io.Serializable;
+
+public class CategoryRequestDTO implements Serializable {
     private Long categoryId;
     private String categoryName;
 

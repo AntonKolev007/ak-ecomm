@@ -1,6 +1,8 @@
 package com.ecommerce.project.payload;
 
-public class AddressRequestDTO {
+import java.io.Serializable;
+
+public class AddressRequestDTO implements Serializable {
     private Long addressId;
     private String street;
     private String buildingName;

@@ -1,8 +1,9 @@
 package com.ecommerce.project.payload;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CategoryResponseDTO {
+public class CategoryResponseDTO implements Serializable {
     private List<CategoryRequestDTO> content;
     private Integer pageNumber;
     private Integer pageSize;
