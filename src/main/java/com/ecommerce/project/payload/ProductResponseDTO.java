@@ -1,11 +1,11 @@
 package com.ecommerce.project.payload;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductResponseDTO implements Serializable {
-    private List<ProductRequestDTO> content;
-
+    private List<ProductRequestDTO> content = new ArrayList<>();
     private Integer pageNumber;
     private Integer pageSize;
     private Long totalElements;

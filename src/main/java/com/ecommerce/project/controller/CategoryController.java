@@ -15,11 +15,9 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
-
 
     @GetMapping("/public/categories")
     public ResponseEntity<CategoryResponseDTO> getAllCategories(

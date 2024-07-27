@@ -68,7 +68,7 @@ public class Product {
         this.specialPrice = specialPrice;
         this.category = category;
         this.user = user;
-        this.products=products;
+        this.products = products;
     }
 
     public Long getProductId() {
