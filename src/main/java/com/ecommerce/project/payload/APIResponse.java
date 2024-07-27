@@ -1,8 +1,9 @@
 package com.ecommerce.project.payload;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class APIResponse  {
+public class APIResponse implements Serializable {
     public String message;
 
     private boolean status;

@@ -2,6 +2,7 @@ package com.ecommerce.project.payload;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
 public class OrderDTO implements Serializable {
     private Long orderId;
     private String email;
-    private List<OrderItemDTO> orderItems;
+    private List<OrderItemDTO> orderItems = new ArrayList<>();
     private LocalDate orderDate;
     private PaymentDTO payment;
     private Double totalAmount;
