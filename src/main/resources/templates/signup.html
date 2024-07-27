@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up - Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="signup-page">
+<header>
+    <div class="logo">
+        <a th:href="@{/index.html}">Taratanci WebShop</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="form-container">
+        <h2>Sign Up</h2>
+        <form th:action="@{/signup}" th:object="${signupRequest}" method="post">
+            <div th:if="${errorMessage != null}" class="error" th:text="${errorMessage}"></div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" th:field="*{username}" placeholder="Enter username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" placeholder="Enter email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}" placeholder="Enter password" required>
+
+            <div class="roles-container">
+                <label class="roles-label">Roles:</label>
+                <div class="roles-checkboxes">
+                    <label><input type="checkbox" th:field="*{role}" value="USER"> User</label>
+                    <label><input type="checkbox" th:field="*{role}" value="SELLER"> Seller</label>
+                    <label><input type="checkbox" th:field="*{role}" value="ADMIN"> Admin</label>
+                </div>
+            </div>
+
+            <button type="submit">Sign Up</button>
+        </form>
+        <div class="additional-links">
+            <a th:href="@{/login}" class="signup-button">Already have an account? Sign In!</a>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

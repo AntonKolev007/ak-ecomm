@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="login-page">
+<header>
+    <div class="logo">
+        <a th:href="@{/index.html}">Taratanci WebShop</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="form-container">
+        <h2>Login</h2>
+        <form th:action="@{/login}" th:object="${loginRequest}" method="post">
+            <div th:if="${errorMessage != null}" class="error" th:text="${errorMessage}"></div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" th:field="*{username}" placeholder="Enter username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}" placeholder="Enter password" required>
+            <input type="hidden" name="redirectUrl" th:value="${redirectUrl}">
+            <button type="submit">Login</button>
+        </form>
+        <div class="additional-links">
+            <a th:href="@{/signup}" class="signup-button">Don't have an account? Sign Up!</a>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

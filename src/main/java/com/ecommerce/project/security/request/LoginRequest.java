@@ -3,10 +3,11 @@ package com.ecommerce.project.security.request;
 import jakarta.validation.constraints.NotBlank;
 
 public class LoginRequest {
-    @NotBlank
+    @NotBlank (message = "Username cannot be blank!")
     private String username;
-    @NotBlank
+    @NotBlank (message = "Password cannot be blank!")
     private String password;
+    private String redirectUrl;
 
     public String getUsername() {
         return username;
@@ -22,5 +23,13 @@ public class LoginRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 }

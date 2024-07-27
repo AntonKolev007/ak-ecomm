@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script th:src="@{/js/scripts.js}"></script>
+</head>
+<body class="index-page">
+<header>
+    <div class="logo">
+        <a th:href="${isLoggedIn ? '/home.html' : '/index.html'}">Taratanci WebShop</a>
+    </div>
+    <div class="nav-links">
+        <a th:href="@{/login}">Log In</a>
+        <a th:href="@{/signup}">Sign Up</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="main-content">
+        <h1>Welcome to Taratanci WebShop</h1>
+        <div class="buttons">
+            <a th:href="@{/products}" class="products">Products</a>
+            <a th:href="@{/categories}" class="categories">Categories</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

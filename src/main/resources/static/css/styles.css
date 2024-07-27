@@ -1,0 +1,242 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 800px;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #004d40; /* Taratanci dark green */
+    color: #fff;
+    padding: 10px 0;
+}
+
+.logo a {
+    color: #ffcc00; /* Taratanci yellow */
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+.nav-links {
+    margin-right: 20px;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 18px;
+}
+
+.nav-links a:hover {
+    font-weight: bold;
+}
+
+.nav-links .icon {
+    display: none;
+}
+
+/* Index page styles */
+body.index-page {
+    background-image: url('/images/index-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.main-content {
+    text-align: center;
+    margin-top: 50px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.main-content h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #004d40;
+    text-shadow: 2px 2px 4px #aaa;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.buttons a {
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 20px;
+    color: #fff;
+    background-color: #009688; /* Taratanci teal */
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.buttons a:hover {
+    background-color: #00796b; /* Darker teal */
+}
+
+.buttons a.products, .buttons a.categories {
+    padding: 20px 40px;
+}
+
+/* Login and Signup page styles */
+body.login-page, body.signup-page {
+    background-size: cover;
+    background-position: center;
+}
+
+body.login-page {
+    background-image: url('/images/login-background.jpg');
+}
+
+body.signup-page {
+    background-image: url('/images/login-background.jpg');
+}
+
+.form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-container input {
+    width: calc(100% - 22px); /* Adjust to account for padding and border */
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-container .roles-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-container .roles-label {
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.form-container .roles-checkboxes {
+    display: flex;
+    gap: 10px;
+}
+
+.form-container .roles-checkboxes label {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.form-container .roles-checkboxes input {
+    margin-right: 5px;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #009688; /* Taratanci teal */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: #00796b; /* Darker teal */
+}
+
+.error {
+    color: red;
+    margin-bottom: 20px;
+}
+
+.additional-links {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.signup-button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #ffcc00; /* Taratanci yellow */
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.signup-button:hover {
+    background-color: #e6b800; /* Darker yellow */
+}
+
+/* Media queries for responsive design */
+@media screen and (max-width: 768px) {
+    .nav-links a:not(:first-child) {
+        display: none;
+    }
+    .nav-links a.icon {
+        display: block;
+    }
+    .nav-links.responsive {
+        position: relative;
+    }
+    .nav-links.responsive a.icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .nav-links.responsive a {
+        display: block;
+        text-align: left;
+    }
+}
+
+@media screen and (max-width: 300px) {
+    header {
+        flex-direction: column;
+    }
+    .logo {
+        margin-bottom: 10px;
+    }
+    .main-content h1 {
+        font-size: 24px;
+    }
+    .buttons a {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+}
