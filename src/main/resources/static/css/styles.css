@@ -20,19 +20,19 @@ header {
     align-items: center;
     background-color: #004d40; /* Taratanci dark green */
     color: #fff;
-    padding: 10px 0;
+    padding: 10px 20px;
 }
 
 .logo a {
     color: #ffcc00; /* Taratanci yellow */
     font-size: 24px;
     font-weight: bold;
-    margin-left: 20px;
     text-decoration: none;
 }
 
 .nav-links {
-    margin-right: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .nav-links a {
@@ -44,10 +44,6 @@ header {
 
 .nav-links a:hover {
     font-weight: bold;
-}
-
-.nav-links .icon {
-    display: none;
 }
 
 /* Index page styles */
@@ -108,7 +104,7 @@ body.login-page {
 }
 
 body.signup-page {
-    background-image: url('/images/login-background.jpg');
+    background-image: url('/images/signup-background.jpg');
 }
 
 .form-container {
@@ -117,6 +113,9 @@ body.signup-page {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 50px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .form-container h2 {
@@ -130,7 +129,7 @@ body.signup-page {
 }
 
 .form-container input {
-    width: calc(100% - 22px); /* Adjust to account for padding and border */
+    width: calc(100% - 20px); /* Adjust to account for padding and border */
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
@@ -139,17 +138,19 @@ body.signup-page {
 
 .form-container .roles-container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     margin-bottom: 20px;
 }
 
 .form-container .roles-label {
-    margin-right: 10px;
+    margin-bottom: 10px;
     white-space: nowrap;
 }
 
 .form-container .roles-checkboxes {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -179,11 +180,19 @@ body.signup-page {
     background-color: #00796b; /* Darker teal */
 }
 
-.error {
-    color: red;
+/* Error message styles */
+.error-message {
+    background-color: #d9534f; /* Bootstrap's red color for errors */
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
     margin-bottom: 20px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
 }
 
+/* Additional links styles */
 .additional-links {
     text-align: center;
     margin-top: 10px;
@@ -205,23 +214,13 @@ body.signup-page {
 
 /* Media queries for responsive design */
 @media screen and (max-width: 768px) {
-    .nav-links a:not(:first-child) {
-        display: none;
+    .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
     }
-    .nav-links a.icon {
-        display: block;
-    }
-    .nav-links.responsive {
-        position: relative;
-    }
-    .nav-links.responsive a.icon {
-        position: absolute;
-        right: 0;
-        top: 0;
-    }
-    .nav-links.responsive a {
-        display: block;
-        text-align: left;
+
+    .nav-links a {
+        margin: 5px 0;
     }
 }
 
@@ -229,12 +228,15 @@ body.signup-page {
     header {
         flex-direction: column;
     }
+
     .logo {
         margin-bottom: 10px;
     }
+
     .main-content h1 {
         font-size: 24px;
     }
+
     .buttons a {
         padding: 10px 20px;
         font-size: 16px;

@@ -43,15 +43,18 @@ public class HomeController {
     @GetMapping({"/", "/index.html"})
     public String index(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isLoggedIn = authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser");
+        boolean isLoggedIn = authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getName());
         model.addAttribute("isLoggedIn", isLoggedIn);
+        if (isLoggedIn) {
+            model.addAttribute("username", authentication.getName());
+        }
         return "index";
     }
 
     @GetMapping("/login")
     public String showLoginForm(@RequestParam(value = "redirectUrl", required = false) String redirectUrl, Model model) {
         model.addAttribute("loginRequest", new LoginRequest());
-        model.addAttribute("redirectUrl", redirectUrl != null ? redirectUrl : "/home.html");
+        model.addAttribute("redirectUrl", redirectUrl != null ? redirectUrl : "/");
         return "login";
     }
 
@@ -66,7 +69,7 @@ public class HomeController {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return "redirect:" + (redirectUrl != null ? redirectUrl : "/home.html");
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/");
         } catch (AuthenticationException e) {
             model.addAttribute("errorMessage", "Invalid username or password");
             model.addAttribute("loginRequest", loginRequest);

@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign up for Taratanci WebShop to enjoy our amazing products and services.">
     <title>Sign Up - Taratanci WebShop</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
@@ -17,14 +19,18 @@
         <h2>Sign Up</h2>
         <form th:action="@{/signup}" th:object="${signupRequest}" method="post">
             <div th:if="${errorMessage != null}" class="error" th:text="${errorMessage}"></div>
+
             <label for="username">Username:</label>
-            <input type="text" id="username" th:field="*{username}" placeholder="Enter username" required>
+            <input type="text" id="username" th:field="*{username}" placeholder="Enter username" aria-label="Username" required>
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></div>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" th:field="*{email}" placeholder="Enter email" required>
+            <input type="email" id="email" th:field="*{email}" placeholder="Enter email" aria-label="Email" required>
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
 
             <label for="password">Password:</label>
-            <input type="password" id="password" th:field="*{password}" placeholder="Enter password" required>
+            <input type="password" id="password" th:field="*{password}" placeholder="Enter password" aria-label="Password" required>
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
 
             <div class="roles-container">
                 <label class="roles-label">Roles:</label>
