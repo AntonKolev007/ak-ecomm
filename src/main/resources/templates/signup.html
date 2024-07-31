@@ -2,8 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sign up for Taratanci WebShop to enjoy our amazing products and services.">
     <title>Sign Up - Taratanci WebShop</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
@@ -18,21 +16,27 @@
     <div class="form-container">
         <h2>Sign Up</h2>
         <form th:action="@{/signup}" th:object="${signupRequest}" method="post">
-            <div th:if="${errorMessage != null}" class="error" th:text="${errorMessage}"></div>
+            <div th:if="${errorMessage != null}" class="error-message" th:text="${errorMessage}"></div>
 
-            <label for="username">Username:</label>
-            <input type="text" id="username" th:field="*{username}" placeholder="Enter username" aria-label="Username" required>
-            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('username')} ? 'field-error' : ''">
+                <div th:if="${#fields.hasErrors('username')}" class="field-error" th:errors="*{username}"></div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" th:field="*{username}" placeholder="Enter username" required>
+            </div>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" th:field="*{email}" placeholder="Enter email" aria-label="Email" required>
-            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('email')} ? 'field-error' : ''">
+                <div th:if="${#fields.hasErrors('email')}" class="field-error" th:errors="*{email}"></div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" th:field="*{email}" placeholder="Enter email" required>
+            </div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" th:field="*{password}" placeholder="Enter password" aria-label="Password" required>
-            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('password')} ? 'field-error' : ''">
+                <div th:if="${#fields.hasErrors('password')}" class="field-error" th:errors="*{password}"></div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" th:field="*{password}" placeholder="Enter password" required>
+            </div>
 
-            <div class="roles-container">
+            <div class="form-group roles-container">
                 <label class="roles-label">Roles:</label>
                 <div class="roles-checkboxes">
                     <label><input type="checkbox" th:field="*{role}" value="USER"> User</label>

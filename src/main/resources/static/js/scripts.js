@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             })
             .then(data => {
-                document.cookie = data.jwtToken;
+                sessionStorage.setItem('jwtToken', data.jwtToken);
                 window.location.href = "/";
             })
             .catch(error => {
@@ -78,15 +78,12 @@ document.addEventListener("DOMContentLoaded", function() {
         })
             .then(response => {
                 if (response.ok) {
-                    return response.json();
+                    window.location.href = "/login";
                 } else {
                     return response.json().then(data => {
                         throw new Error(data.message || "An error occurred during signup. Please try again.");
                     });
                 }
-            })
-            .then(data => {
-                window.location.href = "/login";
             })
             .catch(error => {
                 console.error("Error during signup:", error);
@@ -99,6 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Function to handle signout
     function handleSignout(event) {
         event.preventDefault();
+        sessionStorage.removeItem('jwtToken');
         fetch("/api/auth/signout", {
             method: "POST"
         })

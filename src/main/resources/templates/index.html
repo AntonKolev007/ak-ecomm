@@ -12,17 +12,13 @@
 <body class="index-page">
 <header>
     <div class="logo">
-        <a th:href="@{/index.html}">Taratanci WebShop</a>
+        <a th:href="${isLoggedIn ? '/index.html' : '/index.html'}">Taratanci WebShop</a>
     </div>
     <nav class="nav-links">
-        <div th:if="${isLoggedIn}">
-            <span>Welcome, <a th:href="@{/profile}" th:text="${username}">Username</a>!</span>
-            <a th:href="@{/logout}">Sign Out</a>
-        </div>
-        <div th:if="${!isLoggedIn}">
-            <a th:href="@{/login}">Log In</a>
-            <a th:href="@{/signup}">Sign Up</a>
-        </div>
+        <span th:if="${isLoggedIn}" class="welcome-message">Welcome, <a th:href="@{/profile}" th:text="${username}" class="username-link"></a></span>
+        <a th:if="${!isLoggedIn}" th:href="@{/login}">Log In</a>
+        <a th:if="${!isLoggedIn}" th:href="@{/signup}">Sign Up</a>
+        <a th:if="${isLoggedIn}" th:href="@{/logout}">Sign Out</a>
     </nav>
 </header>
 

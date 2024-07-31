@@ -46,6 +46,23 @@ header {
     font-weight: bold;
 }
 
+/* Welcome message styles */
+.welcome-message {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffcc00; /* Taratanci yellow */
+    margin-right: 20px;
+}
+
+.username-link {
+    color: #ffcc00; /* Taratanci yellow */
+    text-decoration: none;
+}
+
+.username-link:hover {
+    text-decoration: underline;
+}
+
 /* Index page styles */
 body.index-page {
     background-image: url('/images/index-background.jpg');
@@ -104,7 +121,7 @@ body.login-page {
 }
 
 body.signup-page {
-    background-image: url('/images/signup-background.jpg');
+    background-image: url('/images/login-background.jpg');
 }
 
 .form-container {
@@ -190,6 +207,30 @@ body.signup-page {
     text-align: center;
     font-size: 16px;
     font-weight: bold;
+}
+
+.field-error {
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text */
+    padding: 5px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.field-error input {
+    border: 2px solid #d9534f; /* Red border for input fields with errors */
+    animation: blink 1s linear infinite;
+}
+
+/* Blinking effect for error fields */
+@keyframes blink {
+    0%, 100% {
+        border-color: #d9534f;
+    }
+    50% {
+        border-color: #f8d7da;
+    }
 }
 
 /* Additional links styles */
