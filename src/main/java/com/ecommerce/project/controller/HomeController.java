@@ -7,6 +7,7 @@ import com.ecommerce.project.repositories.RoleRepository;
 import com.ecommerce.project.repositories.UserRepository;
 import com.ecommerce.project.security.request.LoginRequest;
 import com.ecommerce.project.security.request.SignupRequest;
+import com.ecommerce.project.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -141,5 +142,36 @@ public class HomeController {
             model.addAttribute("errorMessage", "An error occurred during the signup process. Please try again.");
             return "signup";
         }
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isLoggedIn = authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getName());
+        model.addAttribute("isLoggedIn", isLoggedIn);
+        if (!isLoggedIn) {
+            return "redirect:/login";
+        }
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = userRepository.findById(userDetails.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        model.addAttribute("id", user.getUserId());
+        model.addAttribute("username", user.getUserName());
+        model.addAttribute("roles", user.getRoles().stream().map(Role::getRoleName).toList());
+
+        return "profile";
+    }
+
+    @GetMapping("/products")
+    public String products(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isLoggedIn = authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getName());
+        model.addAttribute("isLoggedIn", isLoggedIn);
+        if (isLoggedIn) {
+            model.addAttribute("username", authentication.getName());
+        }
+        return "products";
     }
 }

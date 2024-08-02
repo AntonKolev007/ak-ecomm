@@ -1,0 +1,206 @@
+/* General styles for products page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 95%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #004d40; /* Taratanci dark green */
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.logo a {
+    color: #ffcc00; /* Taratanci yellow */
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Search and Filter styles */
+.search-filter {
+    flex: 0 0 20%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-filter h2 {
+    margin-bottom: 20px;
+    color: #004d40;
+}
+
+.search-filter input[type="text"],
+.search-filter button,
+.search-filter select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.search-filter input[type="text"] {
+    width: calc(100%); /* Ensures it aligns with the button and select elements */
+}
+
+.search-filter button {
+    background-color: #009688; /* Taratanci teal */
+    color: #fff;
+    cursor: pointer;
+}
+
+.search-filter button:hover {
+    background-color: #00796b; /* Darker teal */
+}
+
+.filter-group {
+    margin-bottom: 10px;
+}
+
+.filter-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Products list styles */
+.products-list {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.product-item {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.product-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.product-item h3 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #004d40;
+    text-align: center;
+}
+
+.product-item p {
+    margin: 5px 0;
+    color: #333;
+    font-size: 14px;
+    text-align: center;
+}
+
+.product-item .price,
+.product-item .special-price {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product-item .price {
+    color: #009688;
+}
+
+.product-item .special-price {
+    color: #d9534f; /* Bootstrap's red color for special price */
+    text-decoration: line-through;
+}
+
+.product-item .discount-stamp {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ffcc00; /* Taratanci yellow */
+    color: #004d40; /* Taratanci dark green */
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Pagination styles */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.pagination button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    background-color: #009688; /* Taratanci teal */
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #00796b; /* Darker teal */
+}
+
+/* Responsive styles */
+@media screen and (max-width: 1024px) {
+    .product-item {
+        grid-column: span 2;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .search-filter {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .products-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .products-list {
+        grid-template-columns: 1fr;
+    }
+}

@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Welcome to Taratanci WebShop, your go-to online store for the best taratanci.">
     <title>Taratanci WebShop</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
     <script th:src="@{/js/scripts.js}"></script>
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
 </head>
 <body class="index-page">
 <header>
     <div class="logo">
-        <a th:href="${isLoggedIn ? '/index.html' : '/index.html'}">Taratanci WebShop</a>
+        <a th:href="@{/}">Taratanci WebShop</a>
     </div>
     <nav class="nav-links">
-        <span th:if="${isLoggedIn}" class="welcome-message">Welcome, <a th:href="@{/profile}" th:text="${username}" class="username-link"></a></span>
+        <span th:if="${isLoggedIn}" class="welcome-message">Welcome, <a th:href="@{/profile}" th:text="${username}" class="username-link"></a>!</span>
         <a th:if="${!isLoggedIn}" th:href="@{/login}">Log In</a>
         <a th:if="${!isLoggedIn}" th:href="@{/signup}">Sign Up</a>
         <a th:if="${isLoggedIn}" th:href="@{/logout}">Sign Out</a>

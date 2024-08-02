@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile - Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+<body class="profile-page">
+<header>
+    <div class="logo">
+        <a th:href="@{/index.html}">Taratanci WebShop</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="profile-card">
+        <h2>User Profile</h2>
+        <div class="profile-info">
+            <p><strong>ID:</strong> <span id="user-id" th:text="${id}"></span></p>
+            <p><strong>Username:</strong> <span id="username" th:text="${username}"></span></p>
+            <p><strong>Roles:</strong></p>
+            <ul id="roles">
+                <li th:each="role : ${roles}" th:text="${role}"></li>
+            </ul>
+        </div>
+        <div class="error-message" id="error-message" style="display: none;"></div>
+    </div>
+</div>
+<script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

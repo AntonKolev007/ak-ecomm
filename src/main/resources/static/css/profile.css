@@ -1,0 +1,111 @@
+/* General styles for profile page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 95%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #004d40; /* Taratanci dark green */
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.logo a {
+    color: #ffcc00; /* Taratanci yellow */
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Profile page specific styles */
+body.profile-page {
+    background-image: url('/images/profile-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.profile-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 50px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card h2 {
+    margin-bottom: 20px;
+    color: #004d40;
+}
+
+.profile-info p {
+    font-size: 18px;
+    color: #333;
+}
+
+.profile-info strong {
+    color: #004d40;
+}
+
+.profile-info ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.profile-info li {
+    font-size: 16px;
+    color: #009688; /* Taratanci teal */
+}
+
+/* Error message styles */
+.error-message {
+    background-color: #d9534f; /* Bootstrap's red color for errors */
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .profile-card {
+        padding: 10px;
+    }
+
+    .profile-info p {
+        font-size: 16px;
+    }
+
+    .profile-info li {
+        font-size: 14px;
+    }
+}

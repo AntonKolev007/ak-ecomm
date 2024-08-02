@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products - Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/products.css}">
+</head>
+<body class="products-page">
+<header>
+    <div class="logo">
+        <a th:href="@{/}">Taratanci WebShop</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="search-filter">
+        <h2>Filters</h2>
+        <input type="text" id="search" placeholder="Search...">
+        <button id="searchBtn">Search</button>
+        <div class="filter-group">
+            <label for="sortBy">Sort by:</label>
+            <select id="sortBy">
+                <option value="name">Name</option>
+                <option value="price">Price</option>
+                <option value="quantity">Quantity</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="sortOrder">Order by:</label>
+            <select id="sortOrder">
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="products-list">
+        <!-- Products will be dynamically inserted here -->
+    </div>
+</div>
+
+<div class="pagination">
+    <button id="prevPage" disabled>Previous</button>
+    <button id="nextPage">Next</button>
+</div>
+
+<script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>
