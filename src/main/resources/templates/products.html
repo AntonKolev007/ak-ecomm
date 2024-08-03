@@ -10,29 +10,36 @@
     <div class="logo">
         <a th:href="@{/}">Taratanci WebShop</a>
     </div>
+    <nav class="nav-links">
+        <a th:href="@{/profile}">Profile</a>
+        <a th:href="@{/logout}">Sign Out</a>
+    </nav>
 </header>
 
 <div class="container">
-    <div class="search-filter">
+    <aside class="search-filter">
         <h2>Filters</h2>
-        <input type="text" id="search" placeholder="Search...">
-        <button id="searchBtn">Search</button>
-        <div class="filter-group">
-            <label for="sortBy">Sort by:</label>
-            <select id="sortBy">
-                <option value="name">Name</option>
-                <option value="price">Price</option>
-                <option value="quantity">Quantity</option>
-            </select>
+        <input type="text" id="searchInput" placeholder="Search...">
+        <button onclick="searchProducts()">Search</button>
+        <select id="sortBy">
+            <option value="productName">Sort by Name</option>
+            <option value="price">Sort by Price</option>
+            <option value="quantity">Sort by Quantity</option>
+        </select>
+        <select id="sortOrder">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+
+        <!-- Category Filter -->
+        <div class="category-filter">
+            <h3>Categories</h3>
+            <div id="categoryList"></div>
+            <button id="applyCategoryFilter">Apply</button>
         </div>
-        <div class="filter-group">
-            <label for="sortOrder">Order by:</label>
-            <select id="sortOrder">
-                <option value="asc">Ascending</option>
-                <option value="desc">Descending</option>
-            </select>
-        </div>
-    </div>
+
+        <button id="clearFilters">Reset Filters</button>
+    </aside>
 
     <div class="products-list">
         <!-- Products will be dynamically inserted here -->
@@ -40,10 +47,11 @@
 </div>
 
 <div class="pagination">
-    <button id="prevPage" disabled>Previous</button>
-    <button id="nextPage">Next</button>
+    <button onclick="prevPage()">Previous</button>
+    <span id="pageInfo"></span>
+    <button onclick="nextPage()">Next</button>
 </div>
 
-<script th:src="@{/js/scripts.js}"></script>
+<script th:src="@{/js/products.js}"></script>
 </body>
 </html>
