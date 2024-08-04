@@ -1,20 +1,22 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function() {
     const sortByElement = document.getElementById('sortBy');
     const sortOrderElement = document.getElementById('sortOrder');
     const clearFiltersButton = document.getElementById('clearFilters');
     const applyCategoryFilterButton = document.getElementById('applyCategoryFilter');
+    const searchInputElement = document.getElementById('searchInput');
 
     let allProducts = [];
     let currentPage = 0;
     const pageSize = 12;
-    let selectedCategories = [];
+    let selectedCategory = "";
+    let filteredProducts = [];
 
     if (sortByElement) {
-        sortByElement.addEventListener('change', () => displayProducts(0));
+        sortByElement.addEventListener('change', () => applyFilters());
     }
 
     if (sortOrderElement) {
-        sortOrderElement.addEventListener('change', () => displayProducts(0));
+        sortOrderElement.addEventListener('change', () => applyFilters());
     }
 
     if (clearFiltersButton) {
@@ -23,6 +25,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (applyCategoryFilterButton) {
         applyCategoryFilterButton.addEventListener('click', applyCategoryFilter);
+    }
+
+    if (searchInputElement) {
+        searchInputElement.addEventListener('input', applyFilters);
     }
 
     if (document.querySelector(".products-list")) {
@@ -40,7 +46,8 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(data => {
                 allProducts = data.content;
-                displayProducts(0);
+                filteredProducts = allProducts;
+                applyFilters();
             })
             .catch(error => console.error('Error fetching products:', error));
     }
@@ -49,120 +56,115 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch(`/api/public/categories`)
             .then(response => response.json())
             .then(data => {
-                const categoryList = document.getElementById('categoryList');
-                categoryList.innerHTML = data.content.map(category => `
-                    <div>
-                        <label>
-                            <input type="checkbox" value="${category.categoryId}" class="category-checkbox">
-                            ${category.categoryName}
-                        </label>
-                    </div>
-                `).join('');
+                const categoryFilter = document.getElementById('categoryFilter');
+                categoryFilter.innerHTML = '<option value="">All Categories</option>';
+                data.content.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.categoryId;
+                    option.textContent = category.categoryName;
+                    categoryFilter.appendChild(option);
+                });
             })
             .catch(error => console.error('Error fetching categories:', error));
     }
 
-    function displayProducts(page) {
-        currentPage = page;
-        const productsList = document.querySelector('.products-list');
-        productsList.innerHTML = '';
-
-        let filteredProducts = [...allProducts];
-
+    function applyFilters() {
+        const searchInput = searchInputElement.value.toLowerCase();
         const sortBy = sortByElement ? sortByElement.value : 'productName';
         const sortOrder = sortOrderElement ? sortOrderElement.value : 'asc';
 
-        filteredProducts = filteredProducts.filter(product => {
-            if (selectedCategories.length === 0) return true;
-            return selectedCategories.includes(product.category.categoryId);
+        filteredProducts = allProducts.filter(product => {
+            const matchesSearch = product.productName.toLowerCase().includes(searchInput) ||
+                product.description.toLowerCase().includes(searchInput);
+            const matchesCategory = selectedCategory === "" || product.category.categoryId == selectedCategory;
+            return matchesSearch && matchesCategory;
         });
 
         filteredProducts.sort((a, b) => {
-            if (a[sortBy] < b[sortBy]) return sortOrder === 'asc' ? -1 : 1;
-            if (a[sortBy] > b[sortBy]) return sortOrder === 'asc' ? 1 : -1;
-            return 0;
+            let comparison = 0;
+            if (a[sortBy] > b[sortBy]) {
+                comparison = 1;
+            } else if (a[sortBy] < b[sortBy]) {
+                comparison = -1;
+            }
+            return sortOrder === 'asc' ? comparison : -comparison;
         });
 
-        const start = page * pageSize;
-        const end = start + pageSize;
-        const paginatedProducts = filteredProducts.slice(start, end);
+        displayProducts();
+    }
 
-        paginatedProducts.forEach(product => {
+    function displayProducts() {
+        const productsList = document.querySelector('.products-list');
+        productsList.innerHTML = '';
+
+        const start = currentPage * pageSize;
+        const end = start + pageSize;
+        const productsToDisplay = filteredProducts.slice(start, end);
+
+        productsToDisplay.forEach(product => {
             const productItem = document.createElement('div');
             productItem.className = 'product-item';
             productItem.innerHTML = `
-                <img src="${product.image}" alt="${product.productName}">
-                <h3>${product.productName}</h3>
-                <p class="price">${product.price}</p>
-                <p class="special-price">${product.specialPrice}</p>
-                <p>${product.description.split(' ').slice(0, 3).join(' ')}...</p>
-                ${product.discount > 0 ? `<div class="discount-stamp">-${product.discount}%</div>` : ''}
-            `;
+            <img src="${product.image}" alt="${product.productName}">
+            <h3>${product.productName}</h3>
+            <p class="price">${product.price}</p>
+            <p class="special-price">${product.specialPrice}</p>
+            <p>${product.description.split(' ').slice(0, 3).join(' ')}...</p>
+            ${product.discount > 0 ? `<div class="discount-stamp">-${product.discount}%</div>` : ''}
+        `;
+            productItem.addEventListener('click', () => {
+                localStorage.setItem('selectedProduct', JSON.stringify(product));
+                window.location.href = '/products/product';
+            });
             productsList.appendChild(productItem);
         });
 
-        updatePagination(filteredProducts.length);
+        updatePagination();
     }
 
-    function updatePagination(totalItems) {
-        const totalPages = Math.ceil(totalItems / pageSize);
+    function updatePagination() {
+        const totalPages = Math.ceil(filteredProducts.length / pageSize);
         const pageInfo = document.getElementById('pageInfo');
         pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
 
-        document.querySelector('.pagination button[onclick="prevPage()"]').disabled = currentPage === 0;
-        document.querySelector('.pagination button[onclick="nextPage()"]').disabled = currentPage >= totalPages - 1;
+        document.getElementById('prevPage').disabled = currentPage === 0;
+        document.getElementById('nextPage').disabled = currentPage >= totalPages - 1;
     }
 
     window.prevPage = function() {
         if (currentPage > 0) {
-            displayProducts(currentPage - 1);
+            currentPage--;
+            displayProducts();
         }
     }
 
     window.nextPage = function() {
-        displayProducts(currentPage + 1);
-    }
-
-    window.searchProducts = function() {
-        const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
-        const filteredProducts = allProducts.filter(product => product.productName.toLowerCase().includes(searchInput));
-        displayFilteredProducts(filteredProducts);
-    }
-
-    function displayFilteredProducts(filteredProducts) {
-        const productsList = document.querySelector('.products-list');
-        productsList.innerHTML = '';
-
-        filteredProducts.forEach(product => {
-            const productItem = document.createElement('div');
-            productItem.className = 'product-item';
-            productItem.innerHTML = `
-                <img src="${product.image}" alt="${product.productName}">
-                <h3>${product.productName}</h3>
-                <p class="price">${product.price}</p>
-                <p class="special-price">${product.specialPrice}</p>
-                <p>${product.description.split(' ').slice(0, 3).join(' ')}...</p>
-                ${product.discount > 0 ? `<div class="discount-stamp">-${product.discount}%</div>` : ''}
-            `;
-            productsList.appendChild(productItem);
-        });
-
-        updatePagination(filteredProducts.length);
+        if (currentPage < Math.ceil(filteredProducts.length / pageSize) - 1) {
+            currentPage++;
+            displayProducts();
+        }
     }
 
     function applyCategoryFilter() {
-        const categoryCheckboxes = document.querySelectorAll('.category-checkbox:checked');
-        selectedCategories = Array.from(categoryCheckboxes).map(cb => parseInt(cb.value));
-        displayProducts(0);
+        const categoryFilter = document.getElementById('categoryFilter');
+        selectedCategory = categoryFilter.value;
+        fetch(`/api/public/categories/${selectedCategory}/products`)
+            .then(response => response.json())
+            .then(data => {
+                filteredProducts = data.content;
+                displayProducts();
+            })
+            .catch(error => console.error('Error fetching category products:', error));
     }
 
     function clearFilters() {
         document.getElementById('searchInput').value = '';
         sortByElement.value = 'productName';
         sortOrderElement.value = 'asc';
-        selectedCategories = [];
-        const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
-        categoryCheckboxes.forEach(cb => cb.checked = false);
-        displayProducts(0);
+        selectedCategory = "";
+        document.getElementById('categoryFilter').value = "";
+        currentPage = 0;
+        filteredProducts = allProducts;
+        applyFilters(); // Ensure filters are applied
     }
 });

@@ -3,6 +3,7 @@ package com.ecommerce.project.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Product {
     @NotBlank
     @Size(min = 6, message = "Product description name must contain at least 6 characters!")
     private String description;
-    @Positive
+    @PositiveOrZero
     private Integer quantity;
     @Positive
     private double price;
