@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{product.details.title}">Product Details - Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/product.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <script th:src="@{/js/product.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
+</head>
+<body class="product-page">
+<th:block th:replace="fragments/header :: headerFragment"></th:block>
+
+<div class="container">
+    <div class="product-actions">
+        <label for="quantitySlider" id="quantityLabel" th:text="#{product.buy}">Buy:</label> <span id="quantityValue">1</span>
+        <input type="range" id="quantitySlider" min="1" max="1" value="1">
+        <button id="addToCartButton" th:text="#{product.addToCart}">Add to Cart</button>
+        <p id="outOfStock" style="display:none;" th:text="#{product.outOfStock}">Out of Stock</p>
+        <button id="backButton" th:text="#{product.back}">Back</button> <!-- Added Back button -->
+    </div>
+    <div class="product-details">
+        <h1 id="productName"></h1>
+        <img id="productImage" alt="Product Image">
+        <p id="productDescription"></p>
+        <p class="price-container">
+            <span class="original-price" id="productPrice"></span>
+            <span class="special-price" id="productSpecialPrice"></span>
+        </p>
+        <p id="youSave" style="display:none;"><span th:text="#{product.youSave}">You save:</span> <span id="priceDifference"></span></p>
+        <p><span th:text="#{product.quantityAvailable}">Quantity available:</span> <span id="productQuantity"></span></p>
+    </div>
+</div>
+</body>
+</html>
