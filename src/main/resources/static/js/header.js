@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const signoutButton = document.querySelector(".nav-links a[href='/logout']");
     const languageSelect = document.getElementById("languageSelect");
 
@@ -47,5 +47,34 @@ document.addEventListener("DOMContentLoaded", function() {
             form.prepend(errorDiv);
         }
         errorDiv.textContent = message;
+    }
+
+    // Fetch and display the cart count
+    function fetchCartCount() {
+        fetch('/api/carts/users/cart', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const cartCountElement = document.getElementById('cartCount');
+                cartCountElement.textContent = data.products.length;
+            })
+            .catch(error => {
+                console.error('Error fetching cart count:', error);
+            });
+    }
+
+    // Only fetch cart count if the user is logged in
+    if (document.querySelector(".nav-links .welcome-message")) {
+        fetchCartCount();
     }
 });

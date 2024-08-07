@@ -11,6 +11,57 @@ body {
     background-color: #f4f4f4;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #004d40; /* Taratanci dark green */
+    color: #fff;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .logo a {
+    color: #ffcc00; /* Taratanci yellow */
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+header .nav-links {
+    display: flex;
+    align-items: center;
+}
+
+header .nav-links .welcome-message {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffcc00; /* Taratanci yellow */
+    margin-right: 20px;
+}
+
+header .nav-links .username-link {
+    color: #fff;
+    text-decoration: none;
+}
+
+header .nav-links .username-link:hover {
+    text-decoration: underline;
+}
+
+header .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 18px;
+}
+
+header .nav-links a:hover {
+    font-weight: bold;
+}
+
 /* Container styles */
 .container {
     display: flex;
