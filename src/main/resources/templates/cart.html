@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{cart.title}">Cart - Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/cart.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <script th:src="@{/js/cart.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
+</head>
+<body class="cart-page">
+<th:block th:replace="fragments/header :: header"></th:block>
+
+<div class="container">
+    <div class="product-control">
+        <div class="filter-header">
+            <h2 th:text="#{cart.productControl}">Product Control</h2>
+        </div>
+        <hr>
+        <button id="deleteProductButton" th:text="#{cart.delete}">Delete</button>
+        <hr>
+        <p>Total Price: <span id="totalPrice" th:text="#{cart.totalPrice}">$0.00</span></p>
+        <button id="orderButton" th:text="#{cart.order}">Order</button>
+    </div>
+
+    <div class="products-list">
+        <!-- Cart products will be dynamically inserted here -->
+    </div>
+</div>
+
+<div class="pagination">
+    <button id="prevPage" onclick="prevPage()" th:text="#{pagination.previous}">Previous</button>
+    <span id="pageInfo" th:text="#{pagination.pageInfo}">Page 1 of 1</span>
+    <button id="nextPage" onclick="nextPage()" th:text="#{pagination.next}">Next</button>
+</div>
+</body>
+</html>
