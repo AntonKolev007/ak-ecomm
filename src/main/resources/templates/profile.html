@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Profile - Taratanci WebShop</title>
+    <title th:text="#{profile.title}">Profile - Taratanci WebShop</title>
     <link rel="stylesheet" th:href="@{/css/profile.css}">
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <script th:src="@{/js/profile.js}"></script>
@@ -13,18 +13,18 @@
 
 <div class="container">
     <div class="profile-card">
-        <h2>User Profile</h2>
+        <h2 th:text="#{profile.title}">User Profile</h2>
         <div class="profile-info">
-            <p><strong>ID:</strong> <span id="user-id" th:text="${id}"></span></p>
-            <p><strong>Username:</strong> <span id="username" th:text="${username}"></span></p>
-            <p><strong>Roles:</strong></p>
+            <p><strong th:text="#{profile.id}">ID:</strong> <span id="user-id" th:text="${id}"></span></p>
+            <p><strong th:text="#{profile.username}">Username:</strong> <span id="username" th:text="${username}"></span></p>
+            <p><strong th:text="#{profile.roles}">Roles:</strong></p>
             <ul id="roles">
                 <li th:each="role : ${roles}" th:text="${role}"></li>
             </ul>
         </div>
         <div class="buttons">
-            <button id="changeUsernameBtn">Change Username</button>
-            <button id="changePasswordBtn">Change Password</button>
+            <button id="changeUsernameBtn" th:text="#{profile.changeUsername}">Change Username</button>
+            <button id="changePasswordBtn" th:text="#{profile.changePassword}">Change Password</button>
         </div>
         <div class="error-message" id="error-message" style="display: none;"></div>
     </div>
