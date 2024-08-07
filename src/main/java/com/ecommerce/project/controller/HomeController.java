@@ -54,6 +54,12 @@ public class HomeController {
 
     @GetMapping("/login")
     public String showLoginForm(@RequestParam(value = "redirectUrl", required = false) String redirectUrl, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isLoggedIn = authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getName());
+        model.addAttribute("isLoggedIn", isLoggedIn);
+        if (isLoggedIn) {
+            model.addAttribute("username", authentication.getName());
+        }
         model.addAttribute("loginRequest", new LoginRequest());
         model.addAttribute("redirectUrl", redirectUrl != null ? redirectUrl : "/");
         return "login";
@@ -81,6 +87,12 @@ public class HomeController {
 
     @GetMapping("/signup")
     public String showSignupForm(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isLoggedIn = authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getName());
+        model.addAttribute("isLoggedIn", isLoggedIn);
+        if (isLoggedIn) {
+            model.addAttribute("username", authentication.getName());
+        }
         model.addAttribute("signupRequest", new SignupRequest());
         return "signup";
     }

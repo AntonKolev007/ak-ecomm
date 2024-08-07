@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <title>Profile - Taratanci WebShop</title>
     <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <script th:src="@{/js/profile.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
 </head>
 <body class="profile-page">
-<header>
-    <div class="logo">
-        <a th:href="@{/index.html}">Taratanci WebShop</a>
-    </div>
-</header>
+<th:block th:replace="fragments/header :: header"></th:block>
 
 <div class="container">
     <div class="profile-card">
@@ -23,9 +22,12 @@
                 <li th:each="role : ${roles}" th:text="${role}"></li>
             </ul>
         </div>
+        <div class="buttons">
+            <button id="changeUsernameBtn">Change Username</button>
+            <button id="changePasswordBtn">Change Password</button>
+        </div>
         <div class="error-message" id="error-message" style="display: none;"></div>
     </div>
 </div>
-<script th:src="@{/js/profile.js}"></script>
 </body>
 </html>

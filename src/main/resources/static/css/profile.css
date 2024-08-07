@@ -12,23 +12,6 @@ body {
     padding: 20px;
 }
 
-/* Header styles */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #004d40; /* Taratanci dark green */
-    color: #fff;
-    padding: 10px 20px;
-}
-
-.logo a {
-    color: #ffcc00; /* Taratanci yellow */
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: none;
-}
-
 /* Profile page specific styles */
 body.profile-page {
     background-image: url('/images/profile-background.jpg');
@@ -77,6 +60,29 @@ body.profile-page {
 .profile-info li {
     font-size: 16px;
     color: #009688; /* Taratanci teal */
+}
+
+/* Button styles */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+button {
+    background-color: #009688; /* Taratanci teal */
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    flex: 1;
+    margin: 0 5px;
+}
+
+button:hover {
+    background-color: #00796b; /* Darker teal */
 }
 
 /* Error message styles */

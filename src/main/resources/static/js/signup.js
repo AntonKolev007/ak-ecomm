@@ -10,15 +10,17 @@ document.addEventListener("DOMContentLoaded", function() {
         const formData = new FormData(signupForm);
         const roles = [];
         signupForm.querySelectorAll('input[name="role"]:checked').forEach((checkbox) => {
-            roles.push(checkbox.value);
+            roles.push(checkbox.getAttribute('data-api-value')); // Use data-api-value for API call
         });
 
         const signupRequest = {
             username: formData.get("username"),
             email: formData.get("email"),
             password: formData.get("password"),
-            role: roles
+            role: roles // Ensure the correct key is used
         };
+
+        console.log(signupRequest); // Add this line for debugging
 
         fetch("/api/auth/signup", {
             method: "POST",

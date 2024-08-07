@@ -1,0 +1,23 @@
+<div th:fragment="headerFragment">
+    <header>
+        <div class="logo">
+            <a th:href="@{/}">Taratanci WebShop</a>
+        </div>
+        <nav class="nav-links">
+            <span th:if="${isLoggedIn}" class="welcome-message">
+                <span th:text="#{welcome}"></span>,
+                <a th:href="@{/profile}" th:text="${username}" class="username-link"></a>!
+            </span>
+            <a th:if="${!isLoggedIn}" th:href="@{/login}" th:text="#{login}">Log In</a>
+            <a th:if="${!isLoggedIn}" th:href="@{/signup}" th:text="#{signup}">Sign Up</a>
+            <a th:if="${isLoggedIn}" th:href="@{/logout}" th:text="#{signout}">Sign Out</a>
+            <select id="languageSelect">
+                <option value="en" th:text="#{english}" th:selected="${#locale.language == 'en'}">English</option>
+                <option value="bg" th:text="#{bulgarian}" th:selected="${#locale.language == 'bg'}">Bulgarian</option>
+                <option value="es" th:text="#{spanish}" th:selected="${#locale.language == 'es'}">Spanish</option>
+                <option value="de" th:text="#{german}" th:selected="${#locale.language == 'de'}">German</option>
+                <option value="fr" th:text="#{french}" th:selected="${#locale.language == 'fr'}">French</option>
+            </select>
+        </nav>
+    </header>
+</div>

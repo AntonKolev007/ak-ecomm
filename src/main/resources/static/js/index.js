@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // Attach event listeners to the login and signup buttons
     const loginForm = document.getElementById("loginForm");
     const signupForm = document.getElementById("signupForm");
-    const signoutButton = document.querySelector(".nav-links a[href='/logout']");
 
     if (loginForm) {
         loginForm.addEventListener("submit", handleLogin);
@@ -10,10 +9,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (signupForm) {
         signupForm.addEventListener("submit", handleSignup);
-    }
-
-    if (signoutButton) {
-        signoutButton.addEventListener("click", handleSignout);
     }
 
     // Function to handle login
@@ -88,28 +83,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error("Error during signup:", error);
                 showError(signupForm, error.message || "An error occurred during signup. Please try again.");
                 signupForm.querySelector('input[type="password"]').value = '';
-            });
-    }
-
-    // Function to handle signout
-    function handleSignout(event) {
-        event.preventDefault();
-        sessionStorage.removeItem('jwtToken');
-        fetch("/api/auth/signout", {
-            method: "POST"
-        })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = "/";
-                } else {
-                    return response.json().then(data => {
-                        throw new Error(data.message || "An error occurred during signout.");
-                    });
-                }
-            })
-            .catch(error => {
-                console.error("Error during signout:", error);
-                showError(document.body, error.message || "An error occurred during signout. Please try again.");
             });
     }
 

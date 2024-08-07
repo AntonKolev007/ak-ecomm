@@ -12,23 +12,6 @@ body {
     padding: 20px;
 }
 
-/* Header styles */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #004d40; /* Taratanci dark green */
-    color: #fff;
-    padding: 10px 20px;
-}
-
-.logo a {
-    color: #ffcc00; /* Taratanci yellow */
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: none;
-}
-
 /* Login page specific styles */
 body.login-page {
     background-image: url('/images/login-background.jpg');

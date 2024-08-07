@@ -6,28 +6,20 @@
     <meta name="description" content="Welcome to Taratanci WebShop, your go-to online store for the best taratanci.">
     <title>Taratanci WebShop</title>
     <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <script th:src="@{/js/header.js}"></script>
     <script th:src="@{/js/index.js}"></script>
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
 </head>
 <body class="index-page">
-<header>
-    <div class="logo">
-        <a th:href="@{/}">Taratanci WebShop</a>
-    </div>
-    <nav class="nav-links">
-        <span th:if="${isLoggedIn}" class="welcome-message">Welcome, <a th:href="@{/profile}" th:text="${username}" class="username-link"></a>!</span>
-        <a th:if="${!isLoggedIn}" th:href="@{/login}">Log In</a>
-        <a th:if="${!isLoggedIn}" th:href="@{/signup}">Sign Up</a>
-        <a th:if="${isLoggedIn}" th:href="@{/logout}">Sign Out</a>
-    </nav>
-</header>
+<div th:replace="fragments/header :: headerFragment"></div>
 
 <div class="container">
     <div class="main-content">
-        <h1>Welcome to Taratanci WebShop</h1>
+        <h1 th:text="#{welcome.message}">Welcome to Taratanci WebShop</h1>
         <div class="buttons">
-            <a th:href="@{/products}" class="products">Products</a>
-            <a th:href="@{/categories}" class="categories">Categories</a>
+            <a th:href="@{/products}" th:text="#{products}" class="products">Products</a>
+            <a th:href="@{/categories}" th:text="#{categories}" class="categories">Categories</a>
         </div>
     </div>
 </div>
