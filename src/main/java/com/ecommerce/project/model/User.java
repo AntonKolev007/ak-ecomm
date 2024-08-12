@@ -5,10 +5,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "users",
@@ -21,14 +21,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long userId;
+
     @NotBlank
     @Size(min = 2, max = 20)
     @Column(name = "user_name")
     private String userName;
+
     @NotBlank
     @Size(max = 50)
     @Email
     private String email;
+
     @NotBlank
     @Size(max = 120)
     private String password;
@@ -40,18 +43,17 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST,
-            CascadeType.MERGE}, orphanRemoval = true)
-    private Set<Product> products;
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private Set<Product> products = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-//    @JoinTable(name="user_address",
-//    joinColumns = @JoinColumn(name="user_id"),
-//    inverseJoinColumns = @JoinColumn(name = "address_id"))
     private List<Address> addresses = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private Cart cart;
+
+    public User() {
+    }
 
     public User(String userName, String email, String password) {
         this.userName = userName;
@@ -59,16 +61,8 @@ public class User {
         this.password = password;
     }
 
-    public User() {
-    }
-
-    public User(long userID,
-                String userName,
-                String email,
-                String password,
-                Set<Role> roles,
-                Set<Product> products, Cart cart) {
-        this.userId = userID;
+    public User(long userId, String userName, String email, String password, Set<Role> roles, Set<Product> products, Cart cart) {
+        this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -81,8 +75,8 @@ public class User {
         return userId;
     }
 
-    public void setUserId(long userID) {
-        this.userId = userID;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -144,10 +138,9 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userID=" + userId +
+                "userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", roles=" + roles +
                 ", addresses=" + addresses +
                 '}';

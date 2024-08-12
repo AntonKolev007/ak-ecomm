@@ -8,15 +8,16 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
     private Long roleId;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 20, name = "role_name")
     private AppRole roleName;
 
-    public Role(AppRole roleName) {
-        this.roleName = roleName;
+    public Role() {
     }
 
-    public Role() {
+    public Role(AppRole roleName) {
+        this.roleName = roleName;
     }
 
     public Role(Long roleId, AppRole roleName) {
@@ -44,6 +45,7 @@ public class Role {
     public String toString() {
         return "Role{" +
                 "roleId=" + roleId +
+                ", roleName=" + roleName +
                 '}';
     }
 }
