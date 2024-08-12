@@ -39,4 +39,9 @@ public class AuthUtil {
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + authentication.getName()));
 
     }
+
+    public boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getName());
+    }
 }

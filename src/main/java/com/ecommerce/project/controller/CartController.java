@@ -23,67 +23,99 @@ public class CartController {
     }
 
     @PostMapping("/carts/products/{productId}/quantity/{quantity}")
-    public ResponseEntity<CartRequestDTO> addProductToCart(
+    public ResponseEntity<Object> addProductToCart(
             @PathVariable Long productId,
             @PathVariable Integer quantity) {
+        if (!authUtil.isAuthenticated()) {
+            return new ResponseEntity<>(new ErrorResponse("Unauthorized: No active session."), HttpStatus.UNAUTHORIZED);
+        }
         try {
             CartRequestDTO cartRequestDTO = cartService.addProductToCart(productId, quantity);
             return new ResponseEntity<>(cartRequestDTO, HttpStatus.CREATED);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorResponse("Resource not found: " + e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ErrorResponse("Internal server error: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/carts")
-    public ResponseEntity<List<CartRequestDTO>> getCarts() {
+    public ResponseEntity<Object> getCarts() {
+        if (!authUtil.isAuthenticated()) {
+            return new ResponseEntity<>(new ErrorResponse("Unauthorized: No active session."), HttpStatus.UNAUTHORIZED);
+        }
         try {
             List<CartRequestDTO> cartDTOs = cartService.getAllCarts();
             return new ResponseEntity<>(cartDTOs, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ErrorResponse("Internal server error: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/carts/users/cart")
-    public ResponseEntity<CartRequestDTO> getCartById() {
+    public ResponseEntity<Object> getCartById() {
+        if (!authUtil.isAuthenticated()) {
+            return new ResponseEntity<>(new ErrorResponse("Unauthorized: No active session."), HttpStatus.UNAUTHORIZED);
+        }
         try {
             String emailId = authUtil.loggedInEmail();
             CartRequestDTO cartDTO = cartService.getCartByEmail(emailId);
             return new ResponseEntity<>(cartDTO, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorResponse("Resource not found: " + e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ErrorResponse("Internal server error: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/cart/products/{productId}/quantity/{operation}")
-    public ResponseEntity<CartRequestDTO> updateCartProduct(
+    public ResponseEntity<Object> updateCartProduct(
             @PathVariable Long productId,
             @PathVariable String operation) {
+        if (!authUtil.isAuthenticated()) {
+            return new ResponseEntity<>(new ErrorResponse("Unauthorized: No active session."), HttpStatus.UNAUTHORIZED);
+        }
         try {
             CartRequestDTO cartDTO = cartService.updateProductQuantityInCart(productId,
                     operation.equalsIgnoreCase("delete") ? -1 : 1);
             return new ResponseEntity<>(cartDTO, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorResponse("Resource not found: " + e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ErrorResponse("Internal server error: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/carts/{cartId}/product/{productId}")
-    public ResponseEntity<String> deleteProductFromCart(@PathVariable Long cartId,
+    public ResponseEntity<Object> deleteProductFromCart(@PathVariable Long cartId,
                                                         @PathVariable Long productId) {
+        if (!authUtil.isAuthenticated()) {
+            return new ResponseEntity<>(new ErrorResponse("Unauthorized: No active session."), HttpStatus.UNAUTHORIZED);
+        }
         try {
             String status = cartService.deleteProductFromCart(cartId, productId);
             return new ResponseEntity<>(status, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorResponse("Resource not found: " + e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ErrorResponse("Internal server error: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Inner class to represent an error response
+    public static class ErrorResponse {
+        private String message;
+
+        public ErrorResponse(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
         }
     }
 }

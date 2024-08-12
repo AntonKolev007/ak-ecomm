@@ -5,6 +5,7 @@ import com.ecommerce.project.exceptions.ResourceNotFoundException;
 import com.ecommerce.project.payload.ProductRequestDTO;
 import com.ecommerce.project.payload.ProductResponseDTO;
 import com.ecommerce.project.service.ProductService;
+import com.ecommerce.project.util.AuthUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +19,19 @@ import java.io.IOException;
 public class ProductController {
 
     private final ProductService productService;
+    private final AuthUtil authUtil;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, AuthUtil authUtil) {
         this.productService = productService;
+        this.authUtil = authUtil;
     }
 
     @PostMapping("/admin/categories/{categoryId}/product")
     public ResponseEntity<Object> addProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO,
                                              @PathVariable Long categoryId) {
+        if (!authUtil.isAuthenticated()) {
+            return new ResponseEntity<>(new ErrorResponse("Unauthorized: No active session."), HttpStatus.UNAUTHORIZED);
+        }
         try {
             ProductRequestDTO savedProductRequestDTO = productService.addProduct(categoryId, productRequestDTO);
             return new ResponseEntity<>(savedProductRequestDTO, HttpStatus.CREATED);
@@ -85,6 +91,9 @@ public class ProductController {
     @PutMapping("/admin/products/{productId}")
     public ResponseEntity<Object> updateProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO,
                                                 @PathVariable Long productId) {
+        if (!authUtil.isAuthenticated()) {
+            return new ResponseEntity<>(new ErrorResponse("Unauthorized: No active session."), HttpStatus.UNAUTHORIZED);
+        }
         try {
             ProductRequestDTO updatedProductDTO = productService.updateProduct(productId, productRequestDTO);
             return new ResponseEntity<>(updatedProductDTO, HttpStatus.OK);
@@ -97,6 +106,9 @@ public class ProductController {
 
     @DeleteMapping("/admin/products/{productId}")
     public ResponseEntity<Object> deleteProduct(@PathVariable Long productId) {
+        if (!authUtil.isAuthenticated()) {
+            return new ResponseEntity<>(new ErrorResponse("Unauthorized: No active session."), HttpStatus.UNAUTHORIZED);
+        }
         try {
             ProductRequestDTO deletedProduct = productService.deleteProduct(productId);
             return new ResponseEntity<>(deletedProduct, HttpStatus.OK);
@@ -110,6 +122,9 @@ public class ProductController {
     @PutMapping("/admin/products/{productId}/image")
     public ResponseEntity<Object> updateProductImage(@PathVariable Long productId,
                                                      @RequestParam("image") MultipartFile image) {
+        if (!authUtil.isAuthenticated()) {
+            return new ResponseEntity<>(new ErrorResponse("Unauthorized: No active session."), HttpStatus.UNAUTHORIZED);
+        }
         try {
             ProductRequestDTO updatedProduct = productService.updateProductImage(productId, image);
             return new ResponseEntity<>(updatedProduct, HttpStatus.OK);

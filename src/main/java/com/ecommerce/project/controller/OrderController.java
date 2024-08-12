@@ -24,6 +24,10 @@ public class OrderController {
     @PostMapping("/order/users/payments/{paymentMethod}")
     public ResponseEntity<Object> orderProducts(@PathVariable String paymentMethod,
                                                 @RequestBody OrderRequestDTO orderRequestDTO) {
+        if (!authUtil.isAuthenticated()) {
+            return new ResponseEntity<>(new ErrorResponse("Unauthorized: No active session."), HttpStatus.UNAUTHORIZED);
+        }
+
         try {
             String emailId = authUtil.loggedInEmail();
             OrderDTO order = orderService.placeOrder(

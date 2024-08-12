@@ -32,9 +32,7 @@ import java.util.stream.Collectors;
 public class AuthController {
 
     private final JwtUtils jwtUtils;
-
     private final AuthenticationManager authenticationManager;
-
     private final UserService userService;
 
     public AuthController(JwtUtils jwtUtils, AuthenticationManager authenticationManager, UserService userService) {
@@ -43,16 +41,14 @@ public class AuthController {
         this.userService = userService;
     }
 
-
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Object> authenticateUser(@RequestBody LoginRequest loginRequest) {
         Authentication authentication;
         try {
-            authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         } catch (AuthenticationException exception) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Invalid username or password"));
         }
 
@@ -69,13 +65,12 @@ public class AuthController {
         UserInfoResponse response = new UserInfoResponse(userDetails.getId(),
                 userDetails.getUsername(), roles, jwtCookie.toString());
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,
-                        jwtCookie.toString())
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body(response);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         try {
             userService.registerUser(signUpRequest);
             return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
@@ -85,7 +80,7 @@ public class AuthController {
     }
 
     @GetMapping("/username")
-    public ResponseEntity<?> currentUserName(Authentication authentication) {
+    public ResponseEntity<Object> currentUserName(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Error: No active session"));
@@ -96,7 +91,7 @@ public class AuthController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<?> getUserDetails(Authentication authentication) {
+    public ResponseEntity<Object> getUserDetails(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Error: No active session"));
@@ -115,22 +110,21 @@ public class AuthController {
     }
 
     @PostMapping("/signout")
-    public ResponseEntity<?> signOutUser(Authentication authentication) {
+    public ResponseEntity<Object> signOutUser(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Error: No active session"));
         }
 
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,
-                        cookie.toString())
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(new MessageResponse("You have been signed out!"));
     }
 
     @PutMapping("/updateUsername")
     @Transactional
-    public ResponseEntity<?> updateUsername(@Valid @RequestBody UpdateUsernameRequest updateUsernameRequest,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<Object> updateUsername(@Valid @RequestBody UpdateUsernameRequest updateUsernameRequest,
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Error: No active session"));
@@ -146,8 +140,8 @@ public class AuthController {
 
     @PutMapping("/updatePassword")
     @Transactional
-    public ResponseEntity<?> updatePassword(@Valid @RequestBody UpdatePasswordRequest updatePasswordRequest,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<Object> updatePassword(@Valid @RequestBody UpdatePasswordRequest updatePasswordRequest,
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Error: No active session"));
