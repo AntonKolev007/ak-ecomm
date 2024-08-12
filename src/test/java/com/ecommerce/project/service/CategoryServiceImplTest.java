@@ -6,6 +6,7 @@ import com.ecommerce.project.model.Category;
 import com.ecommerce.project.payload.CategoryRequestDTO;
 import com.ecommerce.project.payload.CategoryResponseDTO;
 import com.ecommerce.project.repositories.CategoryRepository;
+import com.ecommerce.project.service.impl.CategoryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

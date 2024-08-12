@@ -1,4 +1,4 @@
-package com.ecommerce.project.service;
+package com.ecommerce.project.service.impl;
 
 import com.ecommerce.project.exceptions.APIException;
 import com.ecommerce.project.exceptions.ResourceNotFoundException;
@@ -10,11 +10,14 @@ import com.ecommerce.project.payload.ProductRequestDTO;
 import com.ecommerce.project.repositories.CartItemRepository;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.ProductRepository;
+import com.ecommerce.project.service.CartService;
 import com.ecommerce.project.util.AuthUtil;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,10 +39,9 @@ public class CartServiceImpl implements CartService {
         this.authUtil = authUtil;
     }
 
-
     @Override
     public CartRequestDTO addProductToCart(Long productId, Integer quantity) {
-        //create new or find existing
+        // Create new or find existing
         Cart cart = createCart();
 
         Product product = productRepository.findById(productId)
@@ -66,13 +68,13 @@ public class CartServiceImpl implements CartService {
         newCartItem.setCart(cart);
         newCartItem.setQuantity(quantity);
         newCartItem.setDiscount(product.getDiscount());
-        newCartItem.setProductPrice(product.getSpecialPrice());
+        newCartItem.setProductPrice(formatDoubleToTwoDecimalPlaces(product.getSpecialPrice()));
 
         cartItemRepository.save(newCartItem);
 
         product.setQuantity(product.getQuantity());
 
-        cart.setTotalPrice(cart.getTotalPrice() + (product.getSpecialPrice() * quantity));
+        cart.setTotalPrice(formatDoubleToTwoDecimalPlaces(cart.getTotalPrice() + (product.getSpecialPrice() * quantity)));
 
         cartRepository.save(cart);
 
@@ -169,11 +171,10 @@ public class CartServiceImpl implements CartService {
         if (newQuantity == 0) {
             deleteProductFromCart(cartId, productId);
         } else {
-
-            cartItem.setProductPrice(product.getSpecialPrice());
+            cartItem.setProductPrice(formatDoubleToTwoDecimalPlaces(product.getSpecialPrice()));
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
             cartItem.setDiscount(product.getDiscount());
-            cart.setTotalPrice(cart.getTotalPrice() + (cartItem.getProductPrice() * quantity));
+            cart.setTotalPrice(formatDoubleToTwoDecimalPlaces(cart.getTotalPrice() + (cartItem.getProductPrice() * quantity)));
             cartRepository.save(cart);
         }
         CartItem updatedItem = cartItemRepository.save(cartItem);
@@ -204,8 +205,8 @@ public class CartServiceImpl implements CartService {
             throw new ResourceNotFoundException("Product", "productId", productId);
         }
 
-        cart.setTotalPrice(cart.getTotalPrice() -
-                (cartItem.getProductPrice() * cartItem.getQuantity()));
+        cart.setTotalPrice(formatDoubleToTwoDecimalPlaces(cart.getTotalPrice() -
+                (cartItem.getProductPrice() * cartItem.getQuantity())));
         cartItemRepository.deleteCartItemByProductIdAndCartId(cartId, productId);
 
         return "Product " + cartItem.getProduct().getProductName() + " removed from the cart !!!";
@@ -228,16 +229,16 @@ public class CartServiceImpl implements CartService {
         double cartPrice = cart.getTotalPrice()
                 - (cartItem.getProductPrice() * cartItem.getQuantity());
 
-        cartItem.setProductPrice(product.getSpecialPrice());
+        cartItem.setProductPrice(formatDoubleToTwoDecimalPlaces(product.getSpecialPrice()));
 
-        cart.setTotalPrice(cartPrice
-                + (cartItem.getProductPrice() * cartItem.getQuantity()));
+        cart.setTotalPrice(formatDoubleToTwoDecimalPlaces(cartPrice
+                + (cartItem.getProductPrice() * cartItem.getQuantity())));
 
         cartItem = cartItemRepository.save(cartItem);
     }
 
     private Cart createCart() {
-        //get if it exists or create a new one
+        // Get if it exists or create a new one
         Cart userCart = cartRepository.findCartByEmail(authUtil.loggedInEmail());
         if (userCart != null) {
             return userCart;
@@ -249,5 +250,20 @@ public class CartServiceImpl implements CartService {
         Cart newCart = cartRepository.save(cart);
 
         return newCart;
+    }
+
+    @Override
+    public CartRequestDTO getCartByEmail(String email) {
+        Cart cart = cartRepository.findCartByEmail(email);
+        if (cart == null) {
+            throw new ResourceNotFoundException("Cart", "email", email);
+        }
+        return getCart(email, cart.getCartId());
+    }
+
+    private Double formatDoubleToTwoDecimalPlaces(Double value) {
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

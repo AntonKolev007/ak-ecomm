@@ -17,7 +17,7 @@ public class ProductResponseDTOTest {
     @Test
     public void testDefaultConstructor() {
         ProductResponseDTO dto = new ProductResponseDTO();
-        assertNull(dto.getContent(), "content should be null");
+        assertTrue(dto.getContent().isEmpty(), "content should be null");
         assertNull(dto.getPageNumber(), "pageNumber should be null");
         assertNull(dto.getPageSize(), "pageSize should be null");
         assertNull(dto.getTotalElements(), "totalElements should be null");

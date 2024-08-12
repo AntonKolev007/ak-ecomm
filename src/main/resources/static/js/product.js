@@ -5,8 +5,9 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
+    const imagePath = `/images/${product.image}`;
     document.getElementById('productName').textContent = product.productName;
-    document.getElementById('productImage').src = product.image || 'default.png';
+    document.getElementById('productImage').src = imagePath|| 'default.png';
     document.getElementById('productDescription').textContent = product.description;
     document.getElementById('productQuantity').textContent = product.quantity;
 

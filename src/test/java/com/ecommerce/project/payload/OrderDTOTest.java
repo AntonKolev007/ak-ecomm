@@ -29,7 +29,7 @@ public class OrderDTOTest {
         OrderDTO dto = new OrderDTO();
         assertNull(dto.getOrderId(), "orderId should be null");
         assertNull(dto.getEmail(), "email should be null");
-        assertNull(dto.getOrderItems(), "orderItems should be null");
+        assertTrue(dto.getOrderItems().isEmpty(), "orderItems should be null");
         assertNull(dto.getOrderDate(), "orderDate should be null");
         assertNull(dto.getPayment(), "payment should be null");
         assertNull(dto.getTotalAmount(), "totalAmount should be null");

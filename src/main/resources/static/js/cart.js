@@ -53,10 +53,12 @@ document.addEventListener("DOMContentLoaded", function () {
             productElement.classList.add("product-item");
             productElement.innerHTML = `
                 <h3>${product.productName}</h3>
-                <img src="${product.image}" alt="${product.productName}">
+                <img src="/images/${product.image}" alt="${product.productName}">
                 <p>${product.description}</p>
-                <p class="price">${product.price}</p>
-                <p class="special-price">${product.specialPrice}</p>
+                <!--            <p class="price">${product.price}</p>-->
+            ${product.discount > 0 ? `<p class="price">${product.price}</p>`
+                : `<p class="price" style="color: black; text-decoration: none">${product.price}</p>` }
+            ${product.discount >0 ?`<p class="special-price">${product.specialPrice}</p>` : ''}
                 <div class="discount-stamp">${product.discount}%</div>
                 <p>Quantity: ${product.quantity}</p>
                 <div class="quantity-controls">

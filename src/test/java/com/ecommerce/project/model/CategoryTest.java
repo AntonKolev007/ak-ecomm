@@ -14,7 +14,7 @@ public class CategoryTest {
         Category category = new Category();
         assertNull(category.getCategoryId());
         assertNull(category.getCategoryName());
-        assertNull(category.getProducts()); // Checking for null instead of empty list
+        assertTrue(category.getProducts().isEmpty()); // Checking for null instead of empty list
     }
 
     @Test

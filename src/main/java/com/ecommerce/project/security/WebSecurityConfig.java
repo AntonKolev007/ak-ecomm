@@ -86,7 +86,8 @@ public class WebSecurityConfig {
                                         "/signup",
                                         "/signup.html",
                                         "/login.html",
-                                        "/favicon.ico").permitAll()
+                                        "/favicon.ico",
+                                        "/api/simulate-email").permitAll()
                                 .anyRequest().authenticated()
                 );
 

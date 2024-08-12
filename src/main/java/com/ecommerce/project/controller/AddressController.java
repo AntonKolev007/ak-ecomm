@@ -2,7 +2,6 @@ package com.ecommerce.project.controller;
 
 import com.ecommerce.project.model.User;
 import com.ecommerce.project.payload.AddressRequestDTO;
-import com.ecommerce.project.repositories.AddressRepository;
 import com.ecommerce.project.service.AddressService;
 import com.ecommerce.project.util.AuthUtil;
 import jakarta.validation.Valid;
@@ -17,13 +16,10 @@ import java.util.List;
 public class AddressController {
 
     private final AuthUtil authUtil;
-
-    private final AddressRepository addressRepository;
     private final AddressService addressService;
 
-    public AddressController(AuthUtil authUtil, AddressRepository addressRepository, AddressService addressService) {
+    public AddressController(AuthUtil authUtil, AddressService addressService) {
         this.authUtil = authUtil;
-        this.addressRepository = addressRepository;
         this.addressService = addressService;
     }
 
@@ -64,13 +60,11 @@ public class AddressController {
     }
 
     @DeleteMapping("/addresses/{addressId}")
-    public ResponseEntity<String> deleteAddressById(@PathVariable Long addressId){
+    public ResponseEntity<String> deleteAddressById(@PathVariable Long addressId) {
 
         String status = addressService.deleteAddressById(addressId);
 
-        return new ResponseEntity<String>(status,HttpStatus.OK);
+        return new ResponseEntity<String>(status, HttpStatus.OK);
     }
-
-
 }
 

@@ -28,7 +28,7 @@ public class Product {
     private Integer quantity;
     @Positive
     private double price;
-    @Positive
+    @PositiveOrZero
     private double discount;
     @Positive
     @Column(name = "special_price")

@@ -105,10 +105,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const productItem = document.createElement('div');
             productItem.className = 'product-item';
             productItem.innerHTML = `
-            <img src="${product.image}" alt="${product.productName}">
+            <img src="/images/${product.image}" alt="${product.productName}">
             <h3>${product.productName}</h3>
-            <p class="price">${product.price}</p>
-            <p class="special-price">${product.specialPrice}</p>
+<!--            <p class="price">${product.price}</p>-->
+            ${product.discount > 0 ? `<p class="price">${product.price}</p>` 
+                : `<p class="price" style="color: black; text-decoration: none">${product.price}</p>` }
+            ${product.discount >0 ?`<p class="special-price">${product.specialPrice}</p>` : ''}
             <p>${product.description.split(' ').slice(0, 3).join(' ')}...</p>
             ${product.discount > 0 ? `<div class="discount-stamp">-${product.discount}%</div>` : ''}
         `;
