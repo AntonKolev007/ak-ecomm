@@ -26,40 +26,64 @@ public class CartController {
     public ResponseEntity<CartRequestDTO> addProductToCart(
             @PathVariable Long productId,
             @PathVariable Integer quantity) {
-
-        CartRequestDTO cartRequestDTO = cartService.addProductToCart(productId, quantity);
-        return new ResponseEntity<>(cartRequestDTO, HttpStatus.CREATED);
+        try {
+            CartRequestDTO cartRequestDTO = cartService.addProductToCart(productId, quantity);
+            return new ResponseEntity<>(cartRequestDTO, HttpStatus.CREATED);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/carts")
     public ResponseEntity<List<CartRequestDTO>> getCarts() {
-        List<CartRequestDTO> cartDTOs = cartService.getAllCarts();
-        return new ResponseEntity<>(cartDTOs, HttpStatus.FOUND);
+        try {
+            List<CartRequestDTO> cartDTOs = cartService.getAllCarts();
+            return new ResponseEntity<>(cartDTOs, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/carts/users/cart")
     public ResponseEntity<CartRequestDTO> getCartById() {
-        String emailId = authUtil.loggedInEmail();
-        CartRequestDTO cartDTO = cartService.getCartByEmail(emailId);
-        return new ResponseEntity<>(cartDTO, HttpStatus.OK);
+        try {
+            String emailId = authUtil.loggedInEmail();
+            CartRequestDTO cartDTO = cartService.getCartByEmail(emailId);
+            return new ResponseEntity<>(cartDTO, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/cart/products/{productId}/quantity/{operation}")
     public ResponseEntity<CartRequestDTO> updateCartProduct(
             @PathVariable Long productId,
             @PathVariable String operation) {
-
-        CartRequestDTO cartDTO = cartService.updateProductQuantityInCart(productId,
-                operation.equalsIgnoreCase("delete") ? -1 : 1);
-
-        return new ResponseEntity<>(cartDTO, HttpStatus.OK);
+        try {
+            CartRequestDTO cartDTO = cartService.updateProductQuantityInCart(productId,
+                    operation.equalsIgnoreCase("delete") ? -1 : 1);
+            return new ResponseEntity<>(cartDTO, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/carts/{cartId}/product/{productId}")
     public ResponseEntity<String> deleteProductFromCart(@PathVariable Long cartId,
                                                         @PathVariable Long productId) {
-        String status = cartService.deleteProductFromCart(cartId, productId);
-
-        return new ResponseEntity<>(status, HttpStatus.OK);
+        try {
+            String status = cartService.deleteProductFromCart(cartId, productId);
+            return new ResponseEntity<>(status, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

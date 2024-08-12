@@ -1,5 +1,6 @@
 package com.ecommerce.project.controller;
 
+import com.ecommerce.project.exceptions.ResourceNotFoundException;
 import com.ecommerce.project.payload.OrderDTO;
 import com.ecommerce.project.payload.OrderRequestDTO;
 import com.ecommerce.project.service.OrderService;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService orderService;
-
     private final AuthUtil authUtil;
 
     public OrderController(OrderService orderService, AuthUtil authUtil) {
@@ -22,18 +22,41 @@ public class OrderController {
     }
 
     @PostMapping("/order/users/payments/{paymentMethod}")
-    public ResponseEntity<OrderDTO> orderProducts(@PathVariable String paymentMethod,
-                                                  @RequestBody OrderRequestDTO orderRequestDTO) {
-        String emailId = authUtil.loggedInEmail();
-        OrderDTO order = orderService.placeOrder(
-                emailId,
-                orderRequestDTO.getAddressId(),
-                paymentMethod,
-                orderRequestDTO.getPgName(),
-                orderRequestDTO.getPgPaymentId(),
-                orderRequestDTO.getPgStatus(),
-                orderRequestDTO.getPgResponseMessage()
-        );
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+    public ResponseEntity<Object> orderProducts(@PathVariable String paymentMethod,
+                                                @RequestBody OrderRequestDTO orderRequestDTO) {
+        try {
+            String emailId = authUtil.loggedInEmail();
+            OrderDTO order = orderService.placeOrder(
+                    emailId,
+                    orderRequestDTO.getAddressId(),
+                    paymentMethod,
+                    orderRequestDTO.getPgName(),
+                    orderRequestDTO.getPgPaymentId(),
+                    orderRequestDTO.getPgStatus(),
+                    orderRequestDTO.getPgResponseMessage()
+            );
+            return new ResponseEntity<>(order, HttpStatus.CREATED);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(new ErrorResponse("Resource not found: " + e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorResponse("Internal server error: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Inner class to represent an error response
+    public static class ErrorResponse {
+        private String message;
+
+        public ErrorResponse(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
     }
 }
