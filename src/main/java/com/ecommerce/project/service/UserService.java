@@ -14,6 +14,9 @@ public interface UserService {
     User getUserById(Long id);
     void updateUsername(UpdateUsernameRequest updateUsernameRequest, Long userId);
     void updatePassword(UpdatePasswordRequest updatePasswordRequest, Long userId);
+    void promoteUserToRole(Long userId, String role);
+    void demoteUserFromRole(Long userId, String role);
+    void deleteUser(Long userId);
     String getCurrentUsername(Authentication authentication);
     User getCurrentUser(Authentication authentication);
 }
