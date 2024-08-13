@@ -63,20 +63,21 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
-                                //.requestMatchers("/api/admin/**").permitAll()
-                                //.requestMatchers("/api/public/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
-                                .requestMatchers("/api/test/**").permitAll()
+                                .requestMatchers("/api/testimonials/**").permitAll()
+                                .requestMatchers("/api/public/products/featured").permitAll()
+                                .requestMatchers("/api/public/**").permitAll()
                                 .requestMatchers("/",
-                                        "/index.html",
                                         "/css/**",
                                         "/js/**",
                                         "/images/**",
+                                        "/templates/**",
+                                        "/static/**",
+                                        "/favicon.ico",
                                         "/login",
                                         "/signup",
                                         "/signup.html",
                                         "/login.html",
-                                        "/favicon.ico",
                                         "/api/simulate-email").permitAll()
                                 .anyRequest().authenticated()
                 );

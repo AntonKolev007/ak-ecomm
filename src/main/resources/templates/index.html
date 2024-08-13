@@ -9,17 +9,43 @@
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <script th:src="@{/js/header.js}"></script>
     <script th:src="@{/js/index.js}"></script>
-    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body class="index-page">
 <div th:replace="fragments/header :: headerFragment"></div>
 
 <div class="container">
-    <div class="main-content">
+    <div class="hero-section">
         <h1 th:text="#{welcome.message}">Welcome to Taratanci WebShop</h1>
+        <p th:text="#{welcome.description}">Your one-stop shop for the finest taratanci products.</p>
         <div class="buttons">
-            <a th:href="@{/products}" th:text="#{products}" class="products">Products</a>
-            <a th:href="@{/categories}" th:text="#{categories}" class="categories">Categories</a>
+            <a th:href="@{/products}" th:text="#{products}" class="btn">Products</a>
+            <a th:href="@{/categories}" th:text="#{categories}" class="btn">Categories</a>
+        </div>
+    </div>
+
+    <div class="featured-products-section">
+        <h2 th:text="#{featured.products}">Featured Products</h2>
+        <div class="featured-products">
+            <!-- Example product structure -->
+            <div class="product" th:each="product : ${featuredProducts}">
+                <img th:src="@{${product.imageUrl}}" alt="Product Image">
+                <h3 th:text="${product.name}">Product Name</h3>
+                <p th:text="${product.description}">Product Description</p>
+                <a th:href="@{/products/{id}(id=${product.id})}" th:text="#{view.product}" class="btn">View Product</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="about-section">
+        <h2 th:text="#{about.us}">About Us</h2>
+        <p th:text="#{about.description}">Taratanci WebShop is dedicated to providing the best taratanci products available. Our selection is curated from top producers to ensure quality and satisfaction.</p>
+    </div>
+
+    <div class="testimonials-section">
+        <h2 th:text="#{testimonials}">Testimonials</h2>
+        <div class="testimonials" id="testimonials">
+            <!-- Testimonials will be populated here by JavaScript -->
         </div>
     </div>
 </div>

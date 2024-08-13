@@ -9,6 +9,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
+    flex-wrap: wrap;
 }
 
 header .logo a {
@@ -21,6 +22,7 @@ header .logo a {
 header .nav-links {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 header .nav-links .welcome-message {
@@ -31,7 +33,7 @@ header .nav-links .welcome-message {
 }
 
 header .nav-links .username-link {
-    color: #ffcc00; /* Taratanci yellow */
+    color: #fff; /* White color for the username link */
     text-decoration: none;
 }
 
@@ -40,13 +42,6 @@ header .nav-links .username-link:hover {
 }
 
 header .nav-links a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 10px;
-    font-size: 18px;
-}
-
-header .nav-links .username-link {
     color: #fff;
     text-decoration: none;
     margin: 0 10px;
@@ -95,4 +90,31 @@ header .nav-links select:hover {
     padding: 2px 6px;
     font-size: 12px;
     font-weight: bold;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    header .logo a {
+        font-size: 20px;
+    }
+
+    header .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    header .nav-links a, header .nav-links select {
+        font-size: 16px;
+        margin: 5px 0;
+    }
+
+    header .nav-links .welcome-message {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
 }

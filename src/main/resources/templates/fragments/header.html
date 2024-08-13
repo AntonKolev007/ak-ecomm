@@ -1,9 +1,9 @@
 <div th:fragment="headerFragment">
-    <header>
+    <header role="banner">
         <div class="logo">
             <a th:href="@{/}">Taratanci WebShop</a>
         </div>
-        <nav class="nav-links">
+        <nav class="nav-links" role="navigation">
             <span th:if="${isLoggedIn}" class="welcome-message">
                 <span th:text="#{welcome}"></span>,
                 <a th:href="@{/profile}" th:text="${username}" class="username-link"></a>!
@@ -12,12 +12,12 @@
             <a th:if="${!isLoggedIn}" th:href="@{/signup}" th:text="#{signup}">Sign Up</a>
             <a th:if="${isLoggedIn}" th:href="@{/logout}" th:text="#{signout}">Sign Out</a>
             <div th:if="${isLoggedIn}" class="cart-icon">
-                <a th:href="@{/cart}">
+                <a th:href="@{/cart}" aria-label="#{cart}">
                     <img src="/images/cart-icon.png" alt="Cart">
                     <span class="badge" id="cartCount">0</span>
                 </a>
             </div>
-            <select id="languageSelect">
+            <select id="languageSelect" aria-label="#{language}">
                 <option value="en" th:text="#{english}" th:selected="${#locale.language == 'en'}">English</option>
                 <option value="bg" th:text="#{bulgarian}" th:selected="${#locale.language == 'bg'}">Bulgarian</option>
                 <option value="es" th:text="#{spanish}" th:selected="${#locale.language == 'es'}">Spanish</option>

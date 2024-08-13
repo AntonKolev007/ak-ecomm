@@ -63,7 +63,6 @@ public class ProductServiceImpl implements ProductService {
             if (value.getProductName().equals(productRequestDTO.getProductName())) {
                 isProductNotPresent = false;
                 break;
-
             }
         }
         if (isProductNotPresent) {
@@ -177,7 +176,6 @@ public class ProductServiceImpl implements ProductService {
             cartDTO.setProducts(products);
 
             return cartDTO;
-
         }).toList();
 
         cartDTOs.forEach(cart -> cartService.updateProductInCarts(cart.getCartId(), productId));
@@ -207,8 +205,15 @@ public class ProductServiceImpl implements ProductService {
         String fileName = fileService.uploadImage(path, image);
         productFromDB.setImage(fileName);
         Product updatedProduct = productRepository.save(productFromDB);
-        //return mapped DTO
         return modelMapper.map(updatedProduct, ProductRequestDTO.class);
+    }
+
+    @Override
+    public List<ProductRequestDTO> getFeaturedProducts() {
+        List<Product> featuredProducts = productRepository.findTop3ByOrderBySpecialPriceDesc();
+        return featuredProducts.stream()
+                .map(product -> modelMapper.map(product, ProductRequestDTO.class))
+                .collect(Collectors.toList());
     }
 
     @NotNull

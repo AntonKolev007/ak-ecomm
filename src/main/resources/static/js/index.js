@@ -1,99 +1,90 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Attach event listeners to the login and signup buttons
-    const loginForm = document.getElementById("loginForm");
-    const signupForm = document.getElementById("signupForm");
-
-    if (loginForm) {
-        loginForm.addEventListener("submit", handleLogin);
-    }
-
-    if (signupForm) {
-        signupForm.addEventListener("submit", handleSignup);
-    }
-
-    // Function to handle login
-    function handleLogin(event) {
-        event.preventDefault();
-        const formData = new FormData(loginForm);
-        const loginRequest = {
-            username: formData.get("username"),
-            password: formData.get("password")
-        };
-
-        fetch("/api/auth/signin", {
-            method: "POST",
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch and display the featured products
+    function fetchFeaturedProducts() {
+        fetch('/api/public/products/featured', {
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(loginRequest)
+                'Content-Type': 'application/json'
+            }
         })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.json().then(data => {
-                        throw new Error(data.message || "Invalid login credentials");
-                    });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
                 }
+                return response.json();
             })
             .then(data => {
-                sessionStorage.setItem('jwtToken', data.jwtToken);
-                window.location.href = "/";
+                const featuredProductsContainer = document.querySelector('.featured-products');
+                featuredProductsContainer.innerHTML = ''; // Clear existing content
+
+                data.forEach(product => {
+                    const productDiv = document.createElement('div');
+                    productDiv.className = 'product';
+                    productDiv.innerHTML = `
+                    <img src="/images/${product.image}" alt="Product Image">
+                    <h3>${product.productName}</h3>
+                    <p>${product.description}</p>
+                    <a href="/products/${product.id}" class="btn">View Product</a>
+                `;
+                    featuredProductsContainer.appendChild(productDiv);
+                });
             })
             .catch(error => {
-                console.error("Error during login:", error);
-                showError(loginForm, error.message || "An error occurred during login. Please try again.");
-                loginForm.querySelector('input[type="password"]').value = '';
+                console.error('Error fetching featured products:', error);
             });
     }
 
-    // Function to handle signup
-    function handleSignup(event) {
-        event.preventDefault();
-        const formData = new FormData(signupForm);
-        const roles = [];
-        signupForm.querySelectorAll('input[name="role"]:checked').forEach((checkbox) => {
-            roles.push(checkbox.value);
-        });
-
-        const signupRequest = {
-            username: formData.get("username"),
-            email: formData.get("email"),
-            password: formData.get("password"),
-            role: roles
-        };
-
-        fetch("/api/auth/signup", {
-            method: "POST",
+    // Fetch and display the testimonials as a slideshow
+    function fetchTestimonials() {
+        fetch('/api/testimonials', {
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(signupRequest)
+                'Content-Type': 'application/json'
+            }
         })
             .then(response => {
-                if (response.ok) {
-                    window.location.href = "/login";
-                } else {
-                    return response.json().then(data => {
-                        throw new Error(data.message || "An error occurred during signup. Please try again.");
-                    });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
                 }
+                return response.json();
+            })
+            .then(data => {
+                const testimonialsContainer = document.querySelector('.testimonials');
+                testimonialsContainer.innerHTML = ''; // Clear existing content
+
+                data.forEach((testimonial, index) => {
+                    const testimonialDiv = document.createElement('div');
+                    testimonialDiv.className = 'testimonial';
+                    if (index === 0) {
+                        testimonialDiv.classList.add('active');
+                    }
+                    testimonialDiv.innerHTML = `
+                    <blockquote>${testimonial.text}</blockquote>
+                    <cite>${testimonial.author}</cite>
+                `;
+                    testimonialsContainer.appendChild(testimonialDiv);
+                });
+
+                startTestimonialSlideshow();
             })
             .catch(error => {
-                console.error("Error during signup:", error);
-                showError(signupForm, error.message || "An error occurred during signup. Please try again.");
-                signupForm.querySelector('input[type="password"]').value = '';
+                console.error('Error fetching testimonials:', error);
             });
     }
 
-    // Function to show error messages
-    function showError(form, message) {
-        let errorDiv = form.querySelector(".error-message");
-        if (!errorDiv) {
-            errorDiv = document.createElement("div");
-            errorDiv.className = "error-message";
-            form.prepend(errorDiv);
-        }
-        errorDiv.textContent = message;
+    // Function to start the testimonial slideshow
+    function startTestimonialSlideshow() {
+        const testimonials = document.querySelectorAll('.testimonial');
+        let currentIndex = 0;
+
+        setInterval(() => {
+            testimonials[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % testimonials.length;
+            testimonials[currentIndex].classList.add('active');
+        }, 10000); // Change slide every 5 seconds
     }
+
+    // Initialize fetching of data
+    fetchFeaturedProducts();
+    fetchTestimonials();
 });
