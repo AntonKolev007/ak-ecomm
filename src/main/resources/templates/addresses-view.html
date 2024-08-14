@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{addresses.view.title}">Addresses - Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/addresses-view.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <script th:src="@{/js/addresses-view.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
+</head>
+<body class="addresses-view-page">
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div class="container">
+    <div class="header">
+        <h2 th:text="#{addresses.view.title}">Your Addresses</h2>
+        <button id="addAddressBtn" th:text="#{addresses.view.addButton}">Add Address</button>
+    </div>
+    <div class="addresses-list">
+        <!-- Addresses will be dynamically inserted here -->
+    </div>
+    <div class="error-message" id="error-message" style="display: none;"></div>
+</div>
+
+<div class="modal" id="addressModal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <form id="updateAddressForm">
+            <input type="hidden" id="addressId">
+            <div class="form-group">
+                <label for="street" th:text="#{addresses.street}">Street:</label>
+                <input type="text" id="street" required>
+            </div>
+            <div class="form-group">
+                <label for="buildingName" th:text="#{addresses.buildingName}">Building Name:</label>
+                <input type="text" id="buildingName" required>
+            </div>
+            <div class="form-group">
+                <label for="city" th:text="#{addresses.city}">City:</label>
+                <input type="text" id="city" required>
+            </div>
+            <div class="form-group">
+                <label for="state" th:text="#{addresses.state}">State:</label>
+                <input type="text" id="state" required>
+            </div>
+            <div class="form-group">
+                <label for="country" th:text="#{addresses.country}">Country:</label>
+                <input type="text" id="country" required>
+            </div>
+            <div class="form-group">
+                <label for="zipCode" th:text="#{addresses.zipCode}">Zip Code:</label>
+                <input type="text" id="zipCode" required>
+            </div>
+            <button type="submit" th:text="#{addresses.view.updateButton}">Update</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

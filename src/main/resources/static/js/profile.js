@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const changeUsernameBtn = document.getElementById("changeUsernameBtn");
     const changePasswordBtn = document.getElementById("changePasswordBtn");
+    const addressesBtn = document.getElementById("addressesBtn");
+    const adminPanelBtn = document.getElementById("adminPanelBtn");
 
     if (changeUsernameBtn) {
         changeUsernameBtn.addEventListener("click", function () {
@@ -15,6 +17,18 @@ document.addEventListener("DOMContentLoaded", function() {
     if (changePasswordBtn) {
         changePasswordBtn.addEventListener("click", function () {
             showPasswordPrompt();
+        });
+    }
+
+    if (addressesBtn) {
+        addressesBtn.addEventListener("click", function () {
+            window.location.href = "/addresses-view";
+        });
+    }
+
+    if (adminPanelBtn) {
+        adminPanelBtn.addEventListener("click", function () {
+            window.location.href = "/admin-panel";
         });
     }
 
@@ -36,6 +50,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById('user-id').textContent = data.id;
                 document.getElementById('username').textContent = data.username;
                 document.getElementById('roles').textContent = data.roles.join(', ');
+
+                // Show or hide Admin Panel button based on roles
+                if (data.roles.includes('ROLE_ADMIN')) {
+                    adminPanelBtn.style.display = 'inline-block';
+                } else {
+                    adminPanelBtn.style.display = 'none';
+                }
             })
             .catch(error => {
                 document.getElementById('error-message').textContent = error.message;

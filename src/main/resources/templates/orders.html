@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{order.page.title}">Order - Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/orders.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/orders.js}"></script>
+</head>
+<body class="order-page">
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div class="container">
+    <div class="form-container">
+        <h2 th:text="#{order.page.title.short}">Place Order</h2>
+        <form id="orderForm" th:action="@{/order}" th:object="${orderRequest}" method="post">
+            <div th:if="${errorMessage != null}" class="error-message" th:text="${errorMessage}"></div>
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('addressId')} ? 'field-error' : ''">
+                <div th:if="${#fields.hasErrors('addressId')}" class="field-error" th:errors="*{addressId}"></div>
+                <label for="addressId" th:text="#{order.address}">Address:</label>
+                <select id="addressId" th:field="*{addressId}" required>
+                    <option th:each="address : ${addresses}" th:value="${address.addressId}" th:text="${address.street}">Street</option>
+                </select>
+            </div>
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('pgName')} ? 'field-error' : ''">
+                <div th:if="${#fields.hasErrors('pgName')}" class="field-error" th:errors="*{pgName}"></div>
+                <label for="pgName" th:text="#{order.pgName}">Payment Gateway Name:</label>
+                <input type="text" id="pgName" th:field="*{pgName}" th:placeholder="#{order.enter.pgName}" required>
+            </div>
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('pgPaymentId')} ? 'field-error' : ''">
+                <div th:if="${#fields.hasErrors('pgPaymentId')}" class="field-error" th:errors="*{pgPaymentId}"></div>
+                <label for="pgPaymentId" th:text="#{order.pgPaymentId}">Payment ID:</label>
+                <input type="text" id="pgPaymentId" th:field="*{pgPaymentId}" th:placeholder="#{order.enter.pgPaymentId}" required>
+            </div>
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('pgStatus')} ? 'field-error' : ''">
+                <div th:if="${#fields.hasErrors('pgStatus')}" class="field-error" th:errors="*{pgStatus}"></div>
+                <label for="pgStatus" th:text="#{order.pgStatus}">Payment Status:</label>
+                <input type="text" id="pgStatus" th:field="*{pgStatus}" th:placeholder="#{order.enter.pgStatus}" required>
+            </div>
+
+            <div class="form-group" th:classappend="${#fields.hasErrors('pgResponseMessage')} ? 'field-error' : ''">
+                <div th:if="${#fields.hasErrors('pgResponseMessage')}" class="field-error" th:errors="*{pgResponseMessage}"></div>
+                <label for="pgResponseMessage" th:text="#{order.pgResponseMessage}">Payment Response Message:</label>
+                <input type="text" id="pgResponseMessage" th:field="*{pgResponseMessage}" th:placeholder="#{order.enter.pgResponseMessage}" required>
+            </div>
+
+            <button type="submit" th:text="#{order.button}">Place Order</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

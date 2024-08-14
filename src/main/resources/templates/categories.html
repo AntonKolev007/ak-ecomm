@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{categories.title}">Categories - Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/categories.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/categories.js}"></script>
+</head>
+<body class="category-page">
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div class="container">
+    <div class="categories-wrapper">
+        <button id="prevCategories" class="nav-button">&lt;</button>
+        <div class="categories-list">
+            <!-- Categories will be dynamically inserted here -->
+        </div>
+        <button id="nextCategories" class="nav-button">&gt;</button>
+    </div>
+    <div class="products-list">
+        <!-- Products will be dynamically inserted here -->
+    </div>
+</div>
+
+<div class="pagination">
+    <button id="prevPage" onclick="prevPage()" th:text="#{pagination.previous}">Previous</button>
+    <span id="pageInfo" th:text="#{pagination.pageInfo}">Page 1 of 1</span>
+    <button id="nextPage" onclick="nextPage()" th:text="#{pagination.next}">Next</button>
+</div>
+</body>
+</html>

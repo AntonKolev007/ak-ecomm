@@ -35,21 +35,6 @@
                 <input type="password" id="password" th:field="*{password}" th:placeholder="#{signup.enter.password}" required>
             </div>
 
-            <div class="form-group roles-container">
-                <label class="roles-label" th:text="#{signup.roles}">Roles:</label>
-                <div class="roles-checkboxes">
-                    <label>
-                        <input type="checkbox" name="role" data-api-value="user"> <span th:text="#{signup.role.user}">User</span>
-                    </label>
-                    <label>
-                        <input type="checkbox" name="role" data-api-value="seller"> <span th:text="#{signup.role.seller}">Seller</span>
-                    </label>
-                    <label>
-                        <input type="checkbox" name="role" data-api-value="admin"> <span th:text="#{signup.role.admin}">Admin</span>
-                    </label>
-                </div>
-            </div>
-
             <button type="submit" th:text="#{signup.button}">Sign Up</button>
         </form>
         <div class="additional-links">

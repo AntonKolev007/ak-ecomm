@@ -1,4 +1,4 @@
-/* General styles for signup page */
+/* General styles for order page */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -12,9 +12,9 @@ body {
     padding: 20px;
 }
 
-/* Signup page specific styles */
-body.signup-page {
-    background-image: url('/images/signup-background.jpg');
+/* Order page specific styles */
+body.order-page {
+    background-image: url('/images/order-background.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -40,41 +40,12 @@ body.signup-page {
     font-weight: bold;
 }
 
-.form-container input {
+.form-container input, .form-container select {
     width: calc(100% - 20px); /* Adjust to account for padding and border */
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-.form-container .roles-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
-
-.form-container .roles-label {
-    margin-bottom: 10px;
-    white-space: nowrap;
-}
-
-.form-container .roles-checkboxes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.form-container .roles-checkboxes label {
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-    white-space: nowrap;
-}
-
-.form-container .roles-checkboxes input {
-    margin-right: 5px;
 }
 
 .form-container button {
@@ -135,24 +106,4 @@ body.signup-page {
     50% {
         border-color: #f8d7da;
     }
-}
-
-/* Additional links styles */
-.additional-links {
-    text-align: center;
-    margin-top: 10px;
-}
-
-.signup-button {
-    display: inline-block;
-    padding: 10px 20px;
-    color: #fff;
-    background-color: #ffcc00; /* Taratanci yellow */
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background-color 0.3s;
-}
-
-.signup-button:hover {
-    background-color: #e6b800; /* Darker yellow */
 }

@@ -7,18 +7,32 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ProductPageController {
+public class AdminPageController {
 
-    @GetMapping("/products")
-    public String products(Model model) {
+    @GetMapping("/admin-panel")
+    public String adminPanel(Model model) {
         setAuthenticationAttributes(model);
-        return "products";
+        return "admin-panel";
     }
 
-    @GetMapping("/products/product")
-    public String product(Model model) {
-        setAuthenticationAttributes(model);
-        return "product";
+    @GetMapping("/admin/users")
+    public String adminUsers() {
+        return "admin/users";
+    }
+
+    @GetMapping("/admin/products")
+    public String adminProducts() {
+        return "admin/products";
+    }
+
+    @GetMapping("/admin/orders")
+    public String adminOrders() {
+        return "admin/orders";
+    }
+
+    @GetMapping("/admin/categories")
+    public String adminCategories() {
+        return "admin/categories";
     }
 
     private void setAuthenticationAttributes(Model model) {

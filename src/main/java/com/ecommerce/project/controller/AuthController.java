@@ -11,6 +11,7 @@ import com.ecommerce.project.security.response.UserInfoResponse;
 import com.ecommerce.project.security.services.UserDetailsImpl;
 import com.ecommerce.project.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -22,9 +23,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.validation.BindingResult;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,10 +41,13 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
 
-    public AuthController(JwtUtils jwtUtils, AuthenticationManager authenticationManager, UserService userService) {
+    private final MessageSource messageSource;
+
+    public AuthController(JwtUtils jwtUtils, AuthenticationManager authenticationManager, UserService userService, MessageSource messageSource) {
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.messageSource = messageSource;
     }
 
     @PostMapping("/signin")
@@ -70,7 +79,16 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupRequest signUpRequest, BindingResult bindingResult, Locale locale) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                String localizedErrorMessage = messageSource.getMessage(error, locale);
+                errors.put(error.getField(), localizedErrorMessage);
+            }
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         try {
             userService.registerUser(signUpRequest);
             return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
@@ -124,7 +142,13 @@ public class AuthController {
     @PutMapping("/updateUsername")
     @Transactional
     public ResponseEntity<Object> updateUsername(@Valid @RequestBody UpdateUsernameRequest updateUsernameRequest,
-                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Error: No active session"));
@@ -141,7 +165,13 @@ public class AuthController {
     @PutMapping("/updatePassword")
     @Transactional
     public ResponseEntity<Object> updatePassword(@Valid @RequestBody UpdatePasswordRequest updatePasswordRequest,
-                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Error: No active session"));

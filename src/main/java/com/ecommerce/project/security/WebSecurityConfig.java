@@ -78,7 +78,12 @@ public class WebSecurityConfig {
                                         "/signup",
                                         "/signup.html",
                                         "/login.html",
-                                        "/api/simulate-email").permitAll()
+                                        "/api/simulate-email",
+                                        "/products/**",
+                                        "/categories/**",
+                                        "/addresses").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/users/**").hasRole("USER")
                                 .anyRequest().authenticated()
                 );
 

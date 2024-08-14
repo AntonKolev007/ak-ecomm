@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 
 public class SignupRequest {
     @NotBlank(message = "Username cannot be blank!")
-    @Size(min = 3, max = 20, message="User name must be between 3 and 20 characters.")
+    @Size(min = 3, max = 20, message="{Size.signupRequest.username}")
     private String username;
 
     @NotBlank (message = "Email cannot be blank!")
@@ -17,7 +17,7 @@ public class SignupRequest {
     private Set<String> role;
 
     @NotBlank (message = "Password cannot be blank!")
-    @Size(min = 6, max = 40, message = "Password must be between 6 and 40 characters!")
+    @Size(min = 6, max = 40, message = "{Size.signupRequest.password}")
     private String password;
 
     public SignupRequest() {

@@ -144,8 +144,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function placeOrder() {
-        // Implement order placement logic here
+        fetch('/api/users/addresses', {
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.length === 0) {
+                    window.location.href = '/addresses?redirectTo=order';
+                } else {
+                    window.location.href = '/order';
+                }
+            })
+            .catch(error => console.error('Error fetching addresses:', error));
     }
+
+
 
     function updateTotalPrice(totalPrice) {
         document.getElementById("totalPrice").textContent = totalPrice.toFixed(2);

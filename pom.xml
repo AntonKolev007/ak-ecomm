@@ -144,6 +144,12 @@
             <version>2.17.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+
+
 
     </dependencies>
 

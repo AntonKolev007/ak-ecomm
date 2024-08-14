@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{admin.panel.title}">Admin Panel - Taratanci WebShop</title>
+    <link rel="stylesheet" th:href="@{/css/admin-panel.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <script th:src="@{/js/admin-panel.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
+</head>
+<body class="admin-panel-page">
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div class="container">
+    <h1 th:text="#{admin.panel.title}">Admin Panel</h1>
+    <div class="admin-buttons">
+        <button id="manageUsersBtn" th:text="#{admin.panel.manageUsers}">Manage Users</button>
+        <button id="manageProductsBtn" th:text="#{admin.panel.manageProducts}">Manage Products</button>
+        <button id="manageCategoriesBtn" th:text="#{admin.panel.manageCategories}">Manage Categories</button>
+    </div>
+    <div id="adminContent"></div>
+</div>
+</body>
+</html>

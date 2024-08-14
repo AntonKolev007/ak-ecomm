@@ -7,18 +7,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ProductPageController {
+public class CategoryPageController {
 
-    @GetMapping("/products")
-    public String products(Model model) {
+    @GetMapping("/categories")
+    public String categories(Model model) {
         setAuthenticationAttributes(model);
-        return "products";
+        return "categories";
     }
 
-    @GetMapping("/products/product")
-    public String product(Model model) {
+    @GetMapping("/categories/category")
+    public String category(Model model) {
         setAuthenticationAttributes(model);
-        return "product";
+        return "categories";
     }
 
     private void setAuthenticationAttributes(Model model) {

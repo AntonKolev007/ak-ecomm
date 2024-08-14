@@ -107,8 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
             productItem.innerHTML = `
             <img src="/images/${product.image}" alt="${product.productName}">
             <h3>${product.productName}</h3>
-<!--            <p class="price">${product.price}</p>-->
-            ${product.discount > 0 ? `<p class="price">${product.price}</p>` 
+            ${product.discount > 0 ? `<p class="price">${product.price}</p>`
                 : `<p class="price" style="color: black; text-decoration: none">${product.price}</p>` }
             ${product.discount >0 ?`<p class="special-price">${product.specialPrice}</p>` : ''}
             <p>${product.description.split(' ').slice(0, 3).join(' ')}...</p>
@@ -127,10 +126,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function updatePagination() {
         const totalPages = Math.ceil(filteredProducts.length / pageSize);
         const pageInfo = document.getElementById('pageInfo');
-        pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
+        const prevPageButton = document.getElementById('prevPage');
+        const nextPageButton = document.getElementById('nextPage');
 
-        document.getElementById('prevPage').disabled = currentPage === 0;
-        document.getElementById('nextPage').disabled = currentPage >= totalPages - 1;
+        // Fix i18n placeholders
+        pageInfo.textContent = i18n['pagination.pageInfo'].replace('{0}', currentPage + 1).replace('{1}', totalPages);
+
+        prevPageButton.disabled = currentPage === 0;
+        nextPageButton.disabled = currentPage >= totalPages - 1 || filteredProducts.length <= pageSize;
     }
 
     window.prevPage = function() {
@@ -150,13 +153,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function applyCategoryFilter() {
         const categoryFilter = document.getElementById('categoryFilter');
         selectedCategory = categoryFilter.value;
-        fetch(`/api/public/categories/${selectedCategory}/products`)
-            .then(response => response.json())
-            .then(data => {
-                filteredProducts = data.content;
-                displayProducts();
-            })
-            .catch(error => console.error('Error fetching category products:', error));
+        if (selectedCategory === "") {
+            filteredProducts = allProducts;
+            currentPage = 0;
+            applyFilters();
+        } else {
+            fetch(`/api/public/categories/${selectedCategory}/products`)
+                .then(response => response.json())
+                .then(data => {
+                    filteredProducts = data.content;
+                    currentPage = 0;
+                    displayProducts();
+                })
+                .catch(error => console.error('Error fetching category products:', error));
+        }
     }
 
     function clearFilters() {
