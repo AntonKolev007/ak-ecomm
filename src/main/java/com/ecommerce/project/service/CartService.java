@@ -1,6 +1,6 @@
 package com.ecommerce.project.service;
 
-import com.ecommerce.project.payload.CartRequestDTO;
+import com.ecommerce.project.payload.request.CartRequestDTO;
 
 import java.util.List;
 

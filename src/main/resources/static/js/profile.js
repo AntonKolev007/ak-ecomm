@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-    if (document.getElementById("profile-info")) {
-        fetchProfile();
-    }
 
     const changeUsernameBtn = document.getElementById("changeUsernameBtn");
     const changePasswordBtn = document.getElementById("changePasswordBtn");
@@ -32,6 +29,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    fetchProfile();
+
     function fetchProfile() {
         fetch('/api/auth/user', {
             method: 'GET',
@@ -51,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById('username').textContent = data.username;
                 document.getElementById('roles').textContent = data.roles.join(', ');
 
-                // Show or hide Admin Panel button based on roles
                 if (data.roles.includes('ROLE_ADMIN')) {
                     adminPanelBtn.style.display = 'inline-block';
                 } else {
@@ -59,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             })
             .catch(error => {
+                console.error('Error fetching profile:', error);
                 document.getElementById('error-message').textContent = error.message;
                 document.getElementById('error-message').style.display = 'block';
             });

@@ -1,6 +1,6 @@
 package com.ecommerce.project.service.impl;
 
-import com.ecommerce.project.payload.RoleRequestDTO;
+import com.ecommerce.project.payload.request.RoleRequestDTO;
 import com.ecommerce.project.exceptions.ResourceNotFoundException;
 import com.ecommerce.project.util.RoleRequestMapper;
 import com.ecommerce.project.model.AppRole;

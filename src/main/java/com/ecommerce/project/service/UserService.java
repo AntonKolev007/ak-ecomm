@@ -1,8 +1,8 @@
 package com.ecommerce.project.service;
 
 import com.ecommerce.project.model.User;
-import com.ecommerce.project.payload.UpdatePasswordRequest;
-import com.ecommerce.project.payload.UpdateUsernameRequest;
+import com.ecommerce.project.payload.request.UpdatePasswordRequest;
+import com.ecommerce.project.payload.request.UpdateUsernameRequest;
 import com.ecommerce.project.security.request.SignupRequest;
 import org.springframework.security.core.Authentication;
 

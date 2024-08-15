@@ -1,5 +1,7 @@
 package com.ecommerce.project.payload;
 
+import com.ecommerce.project.payload.request.ProductRequestDTO;
+import com.ecommerce.project.payload.response.ProductResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

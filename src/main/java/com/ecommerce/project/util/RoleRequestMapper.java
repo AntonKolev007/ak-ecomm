@@ -1,6 +1,6 @@
 package com.ecommerce.project.util;
 
-import com.ecommerce.project.payload.RoleRequestDTO;
+import com.ecommerce.project.payload.request.RoleRequestDTO;
 import com.ecommerce.project.model.RoleRequest;
 
 public class RoleRequestMapper {

@@ -1,6 +1,6 @@
 package com.ecommerce.project.service;
 
-import com.ecommerce.project.payload.RoleRequestDTO;
+import com.ecommerce.project.payload.request.RoleRequestDTO;
 
 import java.util.List;
 

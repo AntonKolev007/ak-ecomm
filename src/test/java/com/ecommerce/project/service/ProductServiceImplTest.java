@@ -1,8 +1,8 @@
 package com.ecommerce.project.service;
 
 import com.ecommerce.project.model.*;
-import com.ecommerce.project.payload.ProductRequestDTO;
-import com.ecommerce.project.payload.ProductResponseDTO;
+import com.ecommerce.project.payload.request.ProductRequestDTO;
+import com.ecommerce.project.payload.response.ProductResponseDTO;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.CategoryRepository;
 import com.ecommerce.project.repositories.ProductRepository;

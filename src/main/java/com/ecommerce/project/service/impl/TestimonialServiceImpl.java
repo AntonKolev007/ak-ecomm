@@ -1,7 +1,7 @@
 package com.ecommerce.project.service.impl;
 
 import com.ecommerce.project.model.Testimonial;
-import com.ecommerce.project.payload.TestimonialDTO;
+import com.ecommerce.project.payload.request.TestimonialDTO;
 import com.ecommerce.project.repositories.TestimonialRepository;
 import com.ecommerce.project.service.TestimonialService;
 import org.springframework.stereotype.Service;

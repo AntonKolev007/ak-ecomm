@@ -18,13 +18,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 featuredProductsContainer.innerHTML = ''; // Clear existing content
 
                 data.forEach(product => {
+                    console.log(product);
                     const productDiv = document.createElement('div');
                     productDiv.className = 'product';
                     productDiv.innerHTML = `
                     <img src="/images/${product.image}" alt="Product Image">
                     <h3>${product.productName}</h3>
                     <p>${product.description}</p>
-                    <a href="/products/${product.id}" class="btn">View Product</a>
+                    <a href="/products/product" class="btn">View Product</a>
                 `;
                     featuredProductsContainer.appendChild(productDiv);
                 });

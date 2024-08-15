@@ -1,6 +1,6 @@
 package com.ecommerce.project.exceptions;
 
-import com.ecommerce.project.payload.APIResponse;
+import com.ecommerce.project.payload.response.APIResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
