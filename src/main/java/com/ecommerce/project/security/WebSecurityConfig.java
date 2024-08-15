@@ -84,6 +84,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/api/simulate-email").hasRole("ADMIN")
                                 .requestMatchers("/api/users/**").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers("/api/discount/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 );
 
