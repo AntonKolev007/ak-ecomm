@@ -13,6 +13,7 @@ import com.ecommerce.project.repositories.CategoryRepository;
 import com.ecommerce.project.repositories.ProductRepository;
 import com.ecommerce.project.service.CartService;
 import com.ecommerce.project.service.FileService;
+//import com.ecommerce.project.service.impl.ProductBackupService; // New import for backup service
 import com.ecommerce.project.service.ProductService;
 import jakarta.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
@@ -38,16 +39,22 @@ public class ProductServiceImpl implements ProductService {
     @Value("${project.image}")
     private String path;
     private final ModelMapper modelMapper;
+//    private final ProductBackupService productBackupService; // New dependency for backup service
 
     public ProductServiceImpl(ProductRepository productRepository,
-                              CategoryRepository categoryRepository, CartRepository cartRepository, CartService cartService, FileService fileService,
-                              ModelMapper modelMapper) {
+                              CategoryRepository categoryRepository,
+                              CartRepository cartRepository,
+                              CartService cartService,
+                              FileService fileService,
+                              ModelMapper modelMapper
+                              ) { // Inject backup service
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.cartRepository = cartRepository;
         this.cartService = cartService;
         this.fileService = fileService;
         this.modelMapper = modelMapper;
+         // Initialize backup service
     }
 
     @Override
@@ -73,6 +80,7 @@ public class ProductServiceImpl implements ProductService {
                     - (((product.getDiscount()) * 0.01) * product.getPrice());
             product.setSpecialPrice(specialPrice);
             Product savedProduct = productRepository.save(product);
+//            productBackupService.backupProduct(savedProduct); // Backup new product to external service
             return modelMapper.map(savedProduct, ProductRequestDTO.class);
         } else {
             throw new APIException("Product already exist!");
@@ -163,6 +171,7 @@ public class ProductServiceImpl implements ProductService {
                 - (((product.getDiscount()) * 0.01) * product.getPrice());
         productFromDB.setSpecialPrice(specialPrice);
         Product updatedProduct = productRepository.save(productFromDB);
+//        productBackupService.updateBackupProduct(updatedProduct); // Update product in backup service
 
         List<Cart> carts = cartRepository.findCartsByProductId(productId);
 
@@ -193,6 +202,7 @@ public class ProductServiceImpl implements ProductService {
         carts.forEach(cart -> cartService.deleteProductFromCart(cart.getCartId(), productId));
 
         productRepository.delete(product);
+//        productBackupService.deleteBackupProduct(productId); // Delete product from backup service
         return modelMapper.map(product, ProductRequestDTO.class);
     }
 
@@ -205,6 +215,7 @@ public class ProductServiceImpl implements ProductService {
         String fileName = fileService.uploadImage(path, image);
         productFromDB.setImage(fileName);
         Product updatedProduct = productRepository.save(productFromDB);
+//        productBackupService.updateBackupProduct(updatedProduct); // Update product image in backup service
         return modelMapper.map(updatedProduct, ProductRequestDTO.class);
     }
 

@@ -88,8 +88,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Handle form submission for adding or updating products
+    productForm.addEventListener("submit", handleProductSubmit);
+
     function handleProductSubmit(event) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent the default form submission
         const formData = new FormData(productForm);
 
         const productRequest = {
@@ -332,7 +335,6 @@ document.addEventListener("DOMContentLoaded", function () {
             updateCategory(categoryId, updatedName);
         });
     }
-
 
     function updateCategory(categoryId, updatedName) {
         fetch(`/api/admin/categories/${categoryId}`, {
