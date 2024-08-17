@@ -18,7 +18,43 @@
         <button id="manageProductsBtn" th:text="#{admin.panel.manageProducts}">Manage Products</button>
         <button id="manageCategoriesBtn" th:text="#{admin.panel.manageCategories}">Manage Categories</button>
     </div>
-    <div id="adminContent"></div>
+    <div id="adminContent">
+        <button id="addProductBtn">Add Product</button>
+        <button id="addCategoryBtn">Add Category</button>
+        <div id="productList"></div>
+        <div id="categoryList"></div> <!-- Ensure this element is present for category handling -->
+    </div>
 </div>
+
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modalTitle">Add Product</h2>
+        <form id="productForm">
+            <div class="form-group">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="productName" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="discount">Discount:</label>
+                <input type="number" id="discount" name="discount" step="0.01">
+            </div>
+            <button type="submit">Save Product</button>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>

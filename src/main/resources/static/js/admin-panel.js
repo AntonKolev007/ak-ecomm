@@ -1,140 +1,51 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const manageUsersBtn = document.getElementById("manageUsersBtn");
-    const manageProductsBtn = document.getElementById("manageProductsBtn");
-    const manageCategoriesBtn = document.getElementById("manageCategoriesBtn");
-    const adminContent = document.getElementById("adminContent");
+    const productForm = document.getElementById("productForm");
+    const productList = document.getElementById("productList");
+    const categoryList = document.getElementById("categoryList");
+    const modalTitle = document.getElementById("modalTitle");
+    const productModal = document.getElementById("productModal");
+    const addProductBtn = document.getElementById("addProductBtn");
+    const addCategoryBtn = document.getElementById("addCategoryBtn");
+    let editingProductId = null;
+    let productsData = [];
+    let categoriesData = [];
 
-    if (manageUsersBtn) {
-        manageUsersBtn.addEventListener("click", function () {
-            loadUsers();
-        });
-    }
+    // Initially hide the Add Product and Add Category buttons
+    addProductBtn.style.display = "none";
+    addCategoryBtn.style.display = "none";
+    const usersManagementBtn = document.getElementById("manageUsersBtn");
+    usersManagementBtn.style.display = "none";
 
-    if (manageProductsBtn) {
-        manageProductsBtn.addEventListener("click", function () {
-            loadProducts();
-        });
-    }
+    // Load products when "Manage Products" is clicked
+    document.getElementById("manageProductsBtn").addEventListener("click", function () {
+        loadProducts();
+        addProductBtn.style.display = "inline-block";
+        addCategoryBtn.style.display = "none";
+        productList.style.display = "block";
+        categoryList.style.display = "none";
+    });
 
-    if (manageCategoriesBtn) {
-        manageCategoriesBtn.addEventListener("click", function () {
-            loadCategories();
-        });
-    }
-
-    function loadUsers() {
-        const token = sessionStorage.getItem('jwtToken');
-
-        fetch('/api/admin/users', {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                displayUsers(data);
-            })
-            .catch(error => console.error('Error fetching users:', error));
-    }
-
-    function displayUsers(users) {
-        adminContent.innerHTML = `
-            <h2>Manage Users</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Roles</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${users.map(user => `
-                        <tr>
-                            <td>${user.id}</td>
-                            <td>${user.username}</td>
-                            <td>${user.email}</td>
-                            <td>${user.roles.join(', ')}</td>
-                            <td>
-                                <button class="promoteUserBtn" data-id="${user.id}">Promote</button>
-                                <button class="demoteUserBtn" data-id="${user.id}">Demote</button>
-                                <button class="deleteUserBtn" data-id="${user.id}">Delete</button>
-                            </td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        `;
-
-        document.querySelectorAll('.promoteUserBtn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const userId = this.dataset.id;
-                promoteUser(userId);
-            });
-        });
-
-        document.querySelectorAll('.demoteUserBtn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const userId = this.dataset.id;
-                demoteUser(userId);
-            });
-        });
-
-        document.querySelectorAll('.deleteUserBtn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const userId = this.dataset.id;
-                deleteUser(userId);
-            });
-        });
-    }
-
-    function promoteUser(userId) {
-        // Implement promote user functionality
-    }
-
-    function demoteUser(userId) {
-        // Implement demote user functionality
-    }
-
-    function deleteUser(userId) {
-        const token = sessionStorage.getItem('jwtToken');
-
-        fetch(`/api/admin/delete?userId=${userId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                loadUsers();
-            })
-            .catch(error => console.error('Error deleting user:', error));
-    }
+    // Load categories when "Manage Categories" is clicked
+    document.getElementById("manageCategoriesBtn").addEventListener("click", function () {
+        loadCategories();
+        addCategoryBtn.style.display = "inline-block";
+        addProductBtn.style.display = "none";
+        categoryList.style.display = "block";
+        productList.style.display = "none";
+    });
 
     function loadProducts() {
-        const token = sessionStorage.getItem('jwtToken');
-
-        fetch('/api/public/products', {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
+        fetch("/api/public/products")
             .then(response => response.json())
             .then(data => {
-                displayProducts(data.content);
+                productsData = data.content;
+                displayProducts(productsData);
             })
-            .catch(error => console.error('Error fetching products:', error));
+            .catch(error => console.error("Error fetching products:", error));
     }
 
     function displayProducts(products) {
-        adminContent.innerHTML = `
-            <h2>Manage Products</h2>
-            <button id="addProductBtn">Add Product</button>
+        productList.innerHTML = `
             <table>
                 <thead>
                     <tr>
@@ -153,8 +64,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             <td>${product.description}</td>
                             <td>${product.price}</td>
                             <td>
-                                <button class="editProductBtn" data-id="${product.productId}">Edit</button>
-                                <button class="deleteProductBtn" data-id="${product.productId}">Delete</button>
+                                <button class="edit-btn" data-id="${product.productId}">Edit</button>
+                                <button class="delete-btn" data-id="${product.productId}">Delete</button>
                             </td>
                         </tr>
                     `).join('')}
@@ -162,18 +73,14 @@ document.addEventListener("DOMContentLoaded", function () {
             </table>
         `;
 
-        document.getElementById('addProductBtn').addEventListener('click', function () {
-            addProduct();
-        });
-
-        document.querySelectorAll('.editProductBtn').forEach(btn => {
+        document.querySelectorAll('.edit-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 const productId = this.dataset.id;
-                editProduct(productId);
+                loadProductForEdit(productId);
             });
         });
 
-        document.querySelectorAll('.deleteProductBtn').forEach(btn => {
+        document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 const productId = this.dataset.id;
                 deleteProduct(productId);
@@ -181,57 +88,198 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function addProduct() {
-        // Implement add product functionality
+    function handleProductSubmit(event) {
+        event.preventDefault();
+        const formData = new FormData(productForm);
+
+        const productRequest = {
+            productName: formData.get("productName"),
+            description: formData.get("description"),
+            quantity: formData.get("quantity"),
+            price: formData.get("price"),
+            discount: formData.get("discount"),
+            categoryId: 1 // Defaulting to category 1
+        };
+
+        if (editingProductId) {
+            updateProduct(editingProductId, productRequest);
+        } else {
+            createProduct(productRequest);
+        }
     }
 
-    function editProduct(productId) {
-        // Implement edit product functionality
+    function createProduct(productRequest) {
+        clearErrors(); // Clear previous errors before submitting
+        fetch("/api/admin/categories/1/product", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getJwtTokenFromCookie()}`
+            },
+            body: JSON.stringify(productRequest)
+        })
+            .then(response => {
+                if (response.ok) {
+                    closeModal();
+                    loadProducts();
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(JSON.stringify(data));
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error adding product:", error);
+                handleValidationErrors(JSON.parse(error.message));
+            });
+    }
+
+    function loadProductForEdit(productId) {
+        const product = productsData.find(p => p.productId === parseInt(productId));
+
+        if (product) {
+            editingProductId = product.productId;
+            productForm.productName.value = product.productName || "";
+            productForm.description.value = product.description || "";
+            productForm.quantity.value = product.quantity || 0;
+            productForm.price.value = product.price || 0;
+            productForm.discount.value = product.discount || 0;
+
+            modalTitle.textContent = "Edit Product";
+            productModal.style.display = "block";
+        } else {
+            console.error("Product not found in local data.");
+        }
+    }
+
+    function updateProduct(productId, productRequest) {
+        clearErrors(); // Clear previous errors before submitting
+        fetch(`/api/admin/products/${productId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getJwtTokenFromCookie()}`
+            },
+            body: JSON.stringify(productRequest)
+        })
+            .then(response => {
+                if (response.ok) {
+                    closeModal();
+                    loadProducts();
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(JSON.stringify(data));
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error updating product:", error);
+                handleValidationErrors(JSON.parse(error.message));
+            });
     }
 
     function deleteProduct(productId) {
-        const token = sessionStorage.getItem('jwtToken');
-
         fetch(`/api/admin/products/${productId}`, {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
-                'Authorization': 'Bearer ' + token
+                "Authorization": `Bearer ${getJwtTokenFromCookie()}`
             }
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
+                if (response.ok) {
+                    loadProducts();
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(data.message || "An error occurred while deleting the product.");
+                    });
                 }
-                loadProducts();
             })
-            .catch(error => console.error('Error deleting product:', error));
+            .catch(error => console.error("Error deleting product:", error));
     }
 
-    function loadCategories() {
-        const token = sessionStorage.getItem('jwtToken');
+    function resetForm() {
+        editingProductId = null;
+        if (productForm) productForm.reset();
+        modalTitle.textContent = "Add Product";
+        clearErrors();
+    }
 
-        fetch('/api/public/categories', {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
+    function closeModal() {
+        productModal.style.display = "none";
+        resetForm();
+    }
+
+    function showError(form, message) {
+        clearErrors();
+        const errorDiv = document.createElement("div");
+        errorDiv.className = "error-message";
+        errorDiv.textContent = message;
+        form.prepend(errorDiv);
+    }
+
+    function clearErrors() {
+        const errorMessages = document.querySelectorAll(".error-message");
+        errorMessages.forEach(error => error.remove());
+    }
+
+    function handleValidationErrors(errors) {
+        if (errors && errors.constraintViolations) {
+            errors.constraintViolations.forEach(violation => {
+                const field = violation.propertyPath;
+                const message = violation.interpolatedMessage;
+
+                const inputField = document.getElementById(field);
+                if (inputField) {
+                    const errorDiv = document.createElement("div");
+                    errorDiv.className = "error-message";
+                    errorDiv.textContent = message;
+                    inputField.parentNode.insertBefore(errorDiv, inputField.nextSibling);
+                }
+            });
+        }
+    }
+
+    function getJwtTokenFromCookie() {
+        const cookieString = document.cookie;
+        const cookies = cookieString.split('; ');
+        const tokenCookie = cookies.find(cookie => cookie.startsWith('ecommerceCookieWithCashSmell='));
+        if (tokenCookie) {
+            return tokenCookie.split('=')[1];
+        }
+        return null;
+    }
+
+    // Show the modal for adding a new product
+    if (addProductBtn) {
+        addProductBtn.addEventListener('click', function () {
+            resetForm();
+            productModal.style.display = 'block';
+        });
+    }
+
+    // Close modal when clicking the "x"
+    if (document.querySelector('.close')) {
+        document.querySelector('.close').addEventListener('click', closeModal);
+    }
+
+    // Category management
+    function loadCategories() {
+        fetch("/api/public/categories")
             .then(response => response.json())
             .then(data => {
-                displayCategories(data.content);
+                categoriesData = data.content;
+                displayCategories(categoriesData);
             })
-            .catch(error => console.error('Error fetching categories:', error));
+            .catch(error => console.error("Error fetching categories:", error));
     }
 
     function displayCategories(categories) {
-        adminContent.innerHTML = `
-            <h2>Manage Categories</h2>
-            <button id="addCategoryBtn">Add Category</button>
+        categoryList.innerHTML = `
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-<!--                        <th>Description</th>-->
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -240,10 +288,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         <tr>
                             <td>${category.categoryId}</td>
                             <td>${category.categoryName}</td>
-<!--                            <td>${category.description}</td>-->
                             <td>
-                                <button class="editCategoryBtn" data-id="${category.categoryId}">Edit</button>
-                                <button class="deleteCategoryBtn" data-id="${category.categoryId}">Delete</button>
+                                <button class="edit-category" data-id="${category.categoryId}">Edit</button>
+                                <button class="delete-category" data-id="${category.categoryId}">Delete</button>
                             </td>
                         </tr>
                     `).join('')}
@@ -251,18 +298,14 @@ document.addEventListener("DOMContentLoaded", function () {
             </table>
         `;
 
-        document.getElementById('addCategoryBtn').addEventListener('click', function () {
-            addCategory();
-        });
-
-        document.querySelectorAll('.editCategoryBtn').forEach(btn => {
+        document.querySelectorAll('.edit-category').forEach(btn => {
             btn.addEventListener('click', function () {
                 const categoryId = this.dataset.id;
-                editCategory(categoryId);
+                enterCategoryEditMode(categoryId);
             });
         });
 
-        document.querySelectorAll('.deleteCategoryBtn').forEach(btn => {
+        document.querySelectorAll('.delete-category').forEach(btn => {
             btn.addEventListener('click', function () {
                 const categoryId = this.dataset.id;
                 deleteCategory(categoryId);
@@ -270,29 +313,97 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function addCategory() {
-        // Implement add category functionality
+    function enterCategoryEditMode(categoryId) {
+        const categoryRow = document.querySelector(`.edit-category[data-id="${categoryId}"]`).closest('tr');
+        const categoryNameCell = categoryRow.querySelector('td:nth-child(2)'); // Assuming 2nd column has the category name
+
+        const currentName = categoryNameCell.textContent.trim();
+        categoryNameCell.innerHTML = `<input type="text" id="editCategoryName" value="${currentName}" />`;
+
+        const editButton = categoryRow.querySelector('.edit-category');
+        editButton.textContent = "Update";
+
+        // Remove existing click event listeners to prevent duplicates
+        editButton.replaceWith(editButton.cloneNode(true));
+        const newEditButton = categoryRow.querySelector('.edit-category');
+
+        newEditButton.addEventListener('click', function () {
+            const updatedName = categoryNameCell.querySelector('input').value.trim();
+            updateCategory(categoryId, updatedName);
+        });
     }
 
-    function editCategory(categoryId) {
-        // Implement edit category functionality
+
+    function updateCategory(categoryId, updatedName) {
+        fetch(`/api/admin/categories/${categoryId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getJwtTokenFromCookie()}`
+            },
+            body: JSON.stringify({ categoryName: updatedName })
+        })
+            .then(response => {
+                if (response.ok) {
+                    loadCategories();
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(JSON.stringify(data));
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error updating category:", error);
+            });
     }
 
     function deleteCategory(categoryId) {
-        const token = sessionStorage.getItem('jwtToken');
-
         fetch(`/api/admin/categories/${categoryId}`, {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
-                'Authorization': 'Bearer ' + token
+                "Authorization": `Bearer ${getJwtTokenFromCookie()}`
             }
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
+                if (response.ok) {
+                    loadCategories();
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(data.message || "An error occurred while deleting the category.");
+                    });
                 }
-                loadCategories();
             })
-            .catch(error => console.error('Error deleting category:', error));
+            .catch(error => console.error("Error deleting category:", error));
+    }
+
+    // Show the modal for adding a new category
+    if (addCategoryBtn) {
+        addCategoryBtn.addEventListener('click', function () {
+            const newCategoryName = prompt("Enter new category name:");
+            if (newCategoryName && newCategoryName.trim()) {
+                createCategory({ categoryName: newCategoryName.trim() });
+            }
+        });
+    }
+
+    function createCategory(categoryRequest) {
+        fetch("/api/admin/categories", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getJwtTokenFromCookie()}`
+            },
+            body: JSON.stringify(categoryRequest)
+        })
+            .then(response => {
+                if (response.ok) {
+                    loadCategories();
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(JSON.stringify(data));
+                    });
+                }
+            })
+            .catch(error => console.error("Error adding category:", error));
     }
 });

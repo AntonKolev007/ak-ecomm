@@ -25,8 +25,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     <img src="/images/${product.image}" alt="Product Image">
                     <h3>${product.productName}</h3>
                     <p>${product.description}</p>
-                    <a href="/products/product" class="btn">View Product</a>
-                `;
+                    <a href="#" class="btn view-product-btn" data-product-id="${product.id}">View Product</a>
+            `;
+                    productDiv.querySelector('.view-product-btn').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        localStorage.setItem('selectedProduct', JSON.stringify(product));
+                        window.location.href = '/products/product';
+                    });
                     featuredProductsContainer.appendChild(productDiv);
                 });
             })

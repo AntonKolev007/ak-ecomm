@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
             zipCode: formData.get("zipCode")
         };
 
-        console.log(addressRequest); // Add this line for debugging
+        console.log(addressRequest); // line for debugging
 
         fetch("/api/addresses", {
             method: "POST",

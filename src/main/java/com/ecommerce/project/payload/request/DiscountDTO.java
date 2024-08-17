@@ -1,21 +1,30 @@
 package com.ecommerce.project.payload.request;
 
-import java.io.Serializable;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 
-public class DiscountDTO implements Serializable {
+public class DiscountDTO {
+    private Long id;
+
+    @NotNull(message = "Product ID is required")
     private Long productId;
-    private Double discountPercentage;
-    private String startDate;
-    private String endDate;
 
-    public DiscountDTO() {
+    @NotNull(message = "Discount percentage is required")
+    private Double discountPercentage;
+
+    @NotNull(message = "Start date is required")
+    private LocalDate startDate;
+
+    @NotNull(message = "End date is required")
+    private LocalDate endDate;
+
+    // Getters and setters
+    public Long getId() {
+        return id;
     }
 
-    public DiscountDTO(Long productId, Double discountPercentage, String startDate, String endDate) {
-        this.productId = productId;
-        this.discountPercentage = discountPercentage;
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getProductId() {
@@ -34,19 +43,19 @@ public class DiscountDTO implements Serializable {
         this.discountPercentage = discountPercentage;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 }
